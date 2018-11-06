@@ -81,10 +81,12 @@ public final class Localization {
 	}
 
 	public static void initialize(@Nonnull final Side side, @Nonnull final String modId) {
-		if (side == Side.SERVER) {
-			impl = new ServerImpl(modId);
-		} else {
-			impl = new ClientImpl();
+		if (impl == null) {
+			if (side == Side.SERVER) {
+				impl = new ServerImpl(modId);
+			} else {
+				impl = new ClientImpl();
+			}
 		}
 	}
 
