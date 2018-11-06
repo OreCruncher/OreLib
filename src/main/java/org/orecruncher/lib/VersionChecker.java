@@ -1,5 +1,5 @@
 /*
- * This file is part of Dynamic Surroundings, licensed under the MIT License (MIT).
+ * Licensed under the MIT License (MIT).
  *
  * Copyright (c) OreCruncher
  *
@@ -71,7 +71,7 @@ public final class VersionChecker {
 				try {
 					final ITextComponent component = ITextComponent.Serializer.jsonToComponent(updateMessage);
 					event.player.sendMessage(component);
-				} catch(@Nonnull final Throwable t) {
+				} catch (@Nonnull final Throwable t) {
 					t.printStackTrace();
 				}
 			}

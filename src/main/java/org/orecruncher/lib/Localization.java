@@ -1,5 +1,5 @@
 /*
- * This file is part of Dynamic Surroundings, licensed under the MIT License (MIT).
+ * Licensed under the MIT License (MIT).
  *
  * Copyright (c) OreCruncher
  *
@@ -45,8 +45,6 @@ public final class Localization {
 	}
 
 	private static class ClientImpl extends Local {
-		public ClientImpl() {
-		}
 
 		@Override
 		public String format(final String translateKey, final Object... parameters) {
@@ -67,8 +65,8 @@ public final class Localization {
 
 		private final Translations xlate = new Translations();
 
-		public ServerImpl() {
-			this.xlate.load("/assets/dsurround/lang/");
+		public ServerImpl(@Nonnull final String modId) {
+			this.xlate.load("/assets/" + modId + "/lang/", Translations.DEFAULT_LANGUAGE);
 		}
 
 		@Override
@@ -82,9 +80,9 @@ public final class Localization {
 		}
 	}
 
-	public static void initialize(@Nonnull final Side side) {
+	public static void initialize(@Nonnull final Side side, @Nonnull final String modId) {
 		if (side == Side.SERVER) {
-			impl = new ServerImpl();
+			impl = new ServerImpl(modId);
 		} else {
 			impl = new ClientImpl();
 		}

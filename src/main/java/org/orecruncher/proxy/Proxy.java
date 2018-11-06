@@ -26,39 +26,15 @@ package org.orecruncher.proxy;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.ModBase;
-import org.orecruncher.lib.Localization;
 import org.orecruncher.lib.compat.ModEnvironment;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class Proxy {
-
-	protected long connectionTime = 0;
-
-	protected void registerLanguage() {
-		Localization.initialize(Side.SERVER);
-	}
-
-	protected static void register(final Class<?> clazz) {
-		ModBase.log().debug("Registering for Forge events: %s", clazz.getName());
-		MinecraftForge.EVENT_BUS.register(clazz);
-	}
-
-	public long currentSessionDuration() {
-		return System.currentTimeMillis() - this.connectionTime;
-	}
 
 	public boolean isRunningAsServer() {
 		return true;
@@ -69,7 +45,7 @@ public class Proxy {
 	}
 
 	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
-		registerLanguage();
+		// Left intentionally blank
 	}
 
 	public void init(@Nonnull final FMLInitializationEvent event) {
@@ -77,30 +53,11 @@ public class Proxy {
 	}
 
 	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
+		// Left intentionally blank
 	}
 
 	public void loadCompleted(@Nonnull final FMLLoadCompleteEvent event) {
-	}
-
-	public void clientConnect(@Nonnull final ClientConnectedToServerEvent event) {
-		// NOTHING SHOULD BE HERE - OVERRIDE IN ProxyClient!
-	}
-
-	public void clientDisconnect(@Nonnull final ClientDisconnectionFromServerEvent event) {
-		// NOTHING SHOULD BE HERE - OVERRIDE IN ProxyClient!
-	}
-
-	public void serverAboutToStart(@Nonnull final FMLServerAboutToStartEvent event) {
-	}
-
-	public void serverStarting(@Nonnull final FMLServerStartingEvent event) {
-	}
-
-	public void serverStopping(@Nonnull final FMLServerStoppingEvent event) {
-
-	}
-
-	public void serverStopped(@Nonnull final FMLServerStoppedEvent event) {
+		// Left intentionally blank
 	}
 
 }

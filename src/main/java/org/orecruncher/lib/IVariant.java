@@ -1,5 +1,5 @@
 /*
- * This file is part of OreLib, licensed under the MIT License (MIT).
+ * Licensed under the MIT License (MIT).
  *
  * Copyright (c) OreCruncher
  *
@@ -22,23 +22,11 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.proxy;
+package org.orecruncher.lib;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.IStringSerializable;
 
-@SideOnly(Side.CLIENT)
-public class ProxyClient extends Proxy {
+public interface IVariant extends IStringSerializable {
 
-	@Override
-	public boolean isRunningAsServer() {
-		return false;
-	}
-
-	@Override
-	public Side effectiveSide() {
-		return FMLCommonHandler.instance().getEffectiveSide();
-	}
-
+	int getSubTypeId();
 }

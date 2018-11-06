@@ -1,6 +1,6 @@
-/*
- * This file is part of OreLib, licensed under the MIT License (MIT).
- *
+/* 
+ * Licensed under the MIT License (MIT).
+ * 
  * Copyright (c) OreCruncher
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,23 +22,31 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.proxy;
+package org.orecruncher.lib.compat;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import java.lang.reflect.Field;
 
-@SideOnly(Side.CLIENT)
-public class ProxyClient extends Proxy {
+import javax.annotation.Nonnull;
 
-	@Override
-	public boolean isRunningAsServer() {
-		return false;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+
+public class EntityVillagerUtil {
+
+	private static final Field careerId = ReflectionHelper.findField(EntityVillager.class, "careerId",
+			"field_175563_bv");
+
+	private EntityVillagerUtil() {
+
 	}
 
-	@Override
-	public Side effectiveSide() {
-		return FMLCommonHandler.instance().getEffectiveSide();
+	public static int getCareerId(@Nonnull final EntityVillager entity) {
+		try {
+			return careerId.getInt(entity);
+		} catch (@Nonnull final Throwable t) {
+			// Nothing...
+		}
+		return 1;
 	}
 
 }

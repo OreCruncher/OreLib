@@ -1,5 +1,5 @@
 /*
- * This file is part of OreLib, licensed under the MIT License (MIT).
+ * Licensed under the MIT License (MIT).
  *
  * Copyright (c) OreCruncher
  *
@@ -22,23 +22,21 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.proxy;
+package org.orecruncher.lib.simpledata;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import javax.annotation.Nonnull;
 
-@SideOnly(Side.CLIENT)
-public class ProxyClient extends Proxy {
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
 
-	@Override
-	public boolean isRunningAsServer() {
-		return false;
-	}
-
-	@Override
-	public Side effectiveSide() {
-		return FMLCommonHandler.instance().getEffectiveSide();
-	}
+public interface ISimpleDataRegistry extends INBTSerializable<NBTTagCompound> {
+	
+	ISimpleData getData(@Nonnull final Class<? extends ISimpleData> clazz);
+	
+	boolean isDirty();
+	
+	void setDirty();
+	
+	void clearDirty();
 
 }
