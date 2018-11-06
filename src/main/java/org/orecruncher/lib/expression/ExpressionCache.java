@@ -33,9 +33,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.orecruncher.lib.logging.ModLog;
 
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
-import net.minecraft.util.ITickable;
 
-public class ExpressionCache implements ITickable {
+public class ExpressionCache {
 
 	protected final ModLog logger;
 	protected final List<DynamicVariantList> variants = new ArrayList<>();
@@ -95,7 +94,6 @@ public class ExpressionCache implements ITickable {
 	/**
 	 * Ticks the internally cached DynamicVariableList entities.
 	 */
-	@Override
 	public void update() {
 		this.variants.forEach(DynamicVariantList::update);
 	}

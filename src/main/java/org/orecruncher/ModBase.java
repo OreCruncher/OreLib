@@ -47,17 +47,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = ModInfo.MOD_ID, useMetadata = true, dependencies = ModInfo.DEPENDENCIES, version = ModInfo.VERSION, acceptedMinecraftVersions = ModInfo.MINECRAFT_VERSIONS, updateJSON = ModInfo.UPDATE_URL, certificateFingerprint = ModInfo.FINGERPRINT)
 public class ModBase {
-	public static final String MOD_ID = "orelib";
-	public static final String API_ID = MOD_ID + "API";
-	public static final String RESOURCE_ID = "orelib";
-	public static final String MOD_NAME = "OreLib";
-	public static final String VERSION = "@VERSION@";
-	public static final String MINECRAFT_VERSIONS = "[1.12.2,)";
-	public static final String DEPENDENCIES = "required-after:forge@[14.23.2.2635,);";
-	public static final String UPDATE_URL = "https://raw.githubusercontent.com/OreCruncher/OreLib/master/version.json";
-	public static final String FINGERPRINT = "7a2128d395ad96ceb9d9030fbd41d035b435753a";
 
-	@Instance(MOD_ID)
+	@Instance(ModInfo.MOD_ID)
 	protected static ModBase instance;
 
 	@Nonnull
@@ -81,7 +72,7 @@ public class ModBase {
 	}
 
 	public ModBase() {
-		logger = ModLog.setLogger(ModBase.MOD_ID, LogManager.getLogger(MOD_ID));
+		logger = ModLog.setLogger(ModInfo.MOD_ID, LogManager.getLogger(ModInfo.MOD_ID));
 	}
 
 	@EventHandler
@@ -100,7 +91,7 @@ public class ModBase {
 
 		// Patch up metadata
 		if (!proxy.isRunningAsServer()) {
-			final ModMetadata data = ForgeUtils.getModMetadata(ModBase.MOD_ID);
+			final ModMetadata data = ForgeUtils.getModMetadata(ModInfo.MOD_ID);
 			if (data != null) {
 				data.name = Localization.format("orelib.metadata.Name");
 				data.credits = Localization.format("orelib.metadata.Credits");

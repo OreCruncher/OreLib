@@ -26,13 +26,12 @@ package org.orecruncher.lib.gui;
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RecordTitleEmitter implements ITickable {
+public class RecordTitleEmitter {
 
 	public static interface ITimeKeeper {
 		int getTickMark();
@@ -60,7 +59,6 @@ public class RecordTitleEmitter implements ITickable {
 		this.expiry = this.time.getTickMark() + ticksToDisplay - VANILLA_DISPLAY_TIME;
 	}
 
-	@Override
 	public void update() {
 		if (this.time.getTickMark() <= this.expiry) {
 			this.mc.ingameGUI.setOverlayMessage(this.title, false);
