@@ -24,20 +24,15 @@
 
 package org.orecruncher;
 
-import java.util.Arrays;
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
-import org.orecruncher.lib.ForgeUtils;
-import org.orecruncher.lib.Localization;
 import org.orecruncher.lib.logging.ModLog;
 import org.orecruncher.proxy.Proxy;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -88,18 +83,6 @@ public class ModBase {
 	@EventHandler
 	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
 		proxy.postInit(event);
-
-		// Patch up metadata
-		if (!proxy.isRunningAsServer()) {
-			final ModMetadata data = ForgeUtils.getModMetadata(ModInfo.MOD_ID);
-			if (data != null) {
-				data.name = Localization.format("orelib.metadata.Name");
-				data.credits = Localization.format("orelib.metadata.Credits");
-				data.description = Localization.format("orelib.metadata.Description");
-				data.authorList = Arrays
-						.asList(StringUtils.split(Localization.format("orelib.metadata.Authors"), ','));
-			}
-		}
 	}
 
 	@EventHandler

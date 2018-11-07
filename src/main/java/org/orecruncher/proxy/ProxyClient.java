@@ -24,7 +24,18 @@
 
 package org.orecruncher.proxy;
 
+import java.util.Arrays;
+
+import javax.annotation.Nonnull;
+
+import org.apache.commons.lang3.StringUtils;
+import org.orecruncher.ModInfo;
+import org.orecruncher.lib.ForgeUtils;
+import org.orecruncher.lib.Localization;
+
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -39,6 +50,18 @@ public class ProxyClient extends Proxy {
 	@Override
 	public Side effectiveSide() {
 		return FMLCommonHandler.instance().getEffectiveSide();
+	}
+
+	@Override
+	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
+		// Patch up metadata
+		final ModMetadata data = ForgeUtils.getModMetadata(ModInfo.MOD_ID);
+		if (data != null) {
+			data.name = Localization.format("orelib.metadata.Name");
+			data.credits = Localization.format("orelib.metadata.Credits");
+			data.description = Localization.format("orelib.metadata.Description");
+			data.authorList = Arrays.asList(StringUtils.split(Localization.format("orelib.metadata.Authors"), ','));
+		}
 	}
 
 }

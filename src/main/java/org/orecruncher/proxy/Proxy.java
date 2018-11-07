@@ -26,8 +26,6 @@ package org.orecruncher.proxy;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.lib.compat.ModEnvironment;
-
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -49,7 +47,7 @@ public class Proxy {
 	}
 
 	public void init(@Nonnull final FMLInitializationEvent event) {
-		ModEnvironment.initialize();
+		// Left intentionally blank
 	}
 
 	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
