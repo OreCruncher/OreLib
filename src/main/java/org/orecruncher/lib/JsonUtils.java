@@ -47,6 +47,17 @@ public final class JsonUtils {
 		}
 
 	}
+	
+	@Nullable
+	public static <T> T loadFromJar(@Nonnull final Class<T> clazz, @Nonnull final String path) throws Exception {
+		try (final InputStream stream = clazz.getResourceAsStream(path)) {
+			return load(stream, clazz);
+		} catch (final Throwable t) {
+			final String msg = String.format("Unable to load resource [%s] from JAR", path);
+			LibLog.log().error(msg, t);
+		}
+		return clazz.newInstance();
+	}
 
 	@Nullable
 	public static <T> T load(@Nonnull final InputStream stream, @Nonnull final Class<T> clazz) throws Exception {
@@ -54,7 +65,6 @@ public final class JsonUtils {
 			return new Gson().fromJson(reader, clazz);
 		} catch (final Throwable t) {
 			LibLog.log().error("Unable to process Json from stream", t);
-			;
 		}
 		return clazz.newInstance();
 	}
