@@ -25,7 +25,7 @@ package org.orecruncher;
 
 
 
-public final class ModInfo {
+public final class LibInfo {
 
 	public static final String MOD_ID = "orelib";
 	public static final String MOD_NAME = "OreLib";
@@ -35,7 +35,7 @@ public final class ModInfo {
 	public static final String UPDATE_URL = "https://raw.githubusercontent.com/OreCruncher/OreLib/master/version.json";
 	public static final String FINGERPRINT = "7a2128d395ad96ceb9d9030fbd41d035b435753a";
 
-	private ModInfo() {
+	private LibInfo() {
 
 	}
 }

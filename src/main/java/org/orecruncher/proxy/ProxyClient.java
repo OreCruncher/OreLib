@@ -29,7 +29,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.StringUtils;
-import org.orecruncher.ModInfo;
+import org.orecruncher.LibInfo;
 import org.orecruncher.lib.ForgeUtils;
 import org.orecruncher.lib.Localization;
 
@@ -55,7 +55,7 @@ public class ProxyClient extends Proxy {
 	@Override
 	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
 		// Patch up metadata
-		final ModMetadata data = ForgeUtils.getModMetadata(ModInfo.MOD_ID);
+		final ModMetadata data = ForgeUtils.getModMetadata(LibInfo.MOD_ID);
 		if (data != null) {
 			data.name = Localization.format("orelib.metadata.Name");
 			data.credits = Localization.format("orelib.metadata.Credits");

@@ -40,14 +40,14 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = ModInfo.MOD_ID, useMetadata = true, dependencies = ModInfo.DEPENDENCIES, version = ModInfo.VERSION, acceptedMinecraftVersions = ModInfo.MINECRAFT_VERSIONS, updateJSON = ModInfo.UPDATE_URL, certificateFingerprint = ModInfo.FINGERPRINT)
-public class ModBase {
+@Mod(modid = LibInfo.MOD_ID, useMetadata = true, dependencies = LibInfo.DEPENDENCIES, version = LibInfo.VERSION, acceptedMinecraftVersions = LibInfo.MINECRAFT_VERSIONS, updateJSON = LibInfo.UPDATE_URL, certificateFingerprint = LibInfo.FINGERPRINT)
+public class LibBase {
 
-	@Instance(ModInfo.MOD_ID)
-	protected static ModBase instance;
+	@Instance(LibInfo.MOD_ID)
+	protected static LibBase instance;
 
 	@Nonnull
-	public static ModBase instance() {
+	public static LibBase instance() {
 		return instance;
 	}
 
@@ -66,8 +66,8 @@ public class ModBase {
 		return logger;
 	}
 
-	public ModBase() {
-		logger = ModLog.setLogger(ModInfo.MOD_ID, LogManager.getLogger(ModInfo.MOD_ID));
+	public LibBase() {
+		logger = ModLog.setLogger(LibInfo.MOD_ID, LogManager.getLogger(LibInfo.MOD_ID));
 	}
 
 	@EventHandler

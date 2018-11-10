@@ -24,7 +24,7 @@ package org.orecruncher.lib.task;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.ModBase;
+import org.orecruncher.LibBase;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -80,7 +80,7 @@ public final class Scheduler {
 			t.start();
 			t.join();
 		} catch (@Nonnull final Throwable t) {
-			ModBase.log().error("Error executing deferred task", t);
+			LibBase.log().error("Error executing deferred task", t);
 		}
 	}
 }

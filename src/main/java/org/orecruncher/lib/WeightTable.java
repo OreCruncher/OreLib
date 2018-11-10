@@ -66,6 +66,20 @@ public class WeightTable<T> extends ObjectArray<WeightTable.IItem<? extends T>> 
 				this.add(src[i].getEntry());
 	}
 
+	public boolean add(@Nonnull final T e, final int weight) {
+		return this.add(new IItem<T>() {
+			@Override
+			public int getWeight() {
+				return weight;
+			}
+
+			@Override
+			public T getItem() {
+				return e;
+			}
+		});
+	}
+
 	@Override
 	public boolean add(@Nonnull final WeightTable.IItem<? extends T> entry) {
 		this.totalWeight += entry.getWeight();

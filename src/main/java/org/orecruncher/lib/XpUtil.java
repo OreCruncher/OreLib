@@ -5,7 +5,7 @@ package org.orecruncher.lib;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.ModBase;
+import org.orecruncher.LibBase;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -75,7 +75,7 @@ public class XpUtil {
 		for (int i = 0; i <= MAX_LEVEL; i++) {
 			if (res < 0) {
 				res = Integer.MAX_VALUE;
-				ModBase.log().warn("Internal XP calculation is wrong. Level " + i + " already maxes out.");
+				LibBase.log().warn("Internal XP calculation is wrong. Level " + i + " already maxes out.");
 			}
 			xpmap[i] = res;
 			res += getXpBarCapacity(i);

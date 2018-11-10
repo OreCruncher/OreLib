@@ -25,7 +25,7 @@ package org.orecruncher.lib.chunk;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.ModBase;
+import org.orecruncher.LibBase;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,7 +55,7 @@ public final class ClientChunkCache {
 
 	public static IBlockAccessEx instance() {
 		if (INSTANCE == null) {
-			ModBase.log().warn("Initializing ClientChunkCache on the fly!");
+			LibBase.log().warn("Initializing ClientChunkCache on the fly!");
 			INSTANCE = new PassThroughChunkCache();
 			MinecraftForge.EVENT_BUS.register(ClientChunkCache.class);
 		}
