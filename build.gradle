@@ -7,17 +7,9 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
+
 apply plugin: 'net.minecraftforge.gradle.forge'
-
-//Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
-
-
-ext.config = parseConfig(file('build.properties'))
-
-// This gets tagged onto the archive name
-version= "${config.version.minecraft}-${config.version.mod.major}.${config.version.mod.minor}.${config.version.mod.revis}.${config.version.mod.patch}"
-group= "${config.group}"
-archivesBaseName = "${config.archive}"
+apply from: 'configuration.gradle'
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {
@@ -25,67 +17,9 @@ compileJava {
 }
 
 minecraft {
-    version = "${config.version.minecraft}-${config.version.forge}"
     runDir = "run"
-    replace '@VERSION@', "${config.version.mod.major}.${config.version.mod.minor}.${config.version.mod.revis}.${config.version.mod.patch}"
-    
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "${config.version.snapshot}"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-}
-
-repositories {
-
-    maven {
-        name = "chickenbones"
-        url = "http://chickenbones.net/maven/"
-    }
-    
-    maven {
-        name = "CoFH Maven"
-        url = "http://maven.covers1624.net"
-    }
-    
-    maven {
-        url "http://dvs1.progwml6.com/files/maven"
-    }
-    
-    maven {
-        name "Mobius Repo"
-        url "http://mobiusstrip.eu/maven"
-    }
-    
-    maven {
-        name "Foxiehost"
-        url "http://maven.foxiehost.eu"
-    }
-	
-    maven {
-    	name "Chisel"
-    	url "http://maven.tterrag.com"
-    }
-    
-    maven {
-		url 'https://repo.elytradev.com/'
-	}
-	
-	maven {
-        name = "thiakil"
-        url = "http://maven.thiakil.com"
-    }
-    
-    maven { // TOP
-	    name 'tterrag maven'
-	    url "http://maven.tterrag.com/"
-	}
-}
-
-dependencies {
-
+    replace '@VERSION@', project.ext.modVersion
+    mappings = project.ext.snapshot
 }
 
 processResources
@@ -108,27 +42,22 @@ processResources
     }
 }
 
-jar {
-    
-    manifest {
-
-    }
-}
-
-def parseConfig(File config) {
-    config.withReader {
-        def prop = new Properties()
-        prop.load(it)
-        return (new ConfigSlurper().parse(prop))
-    }
+task sourcesJar(type: Jar, dependsOn: classes) {
+    description = 'Creates a JAR containing the source code.'
+    from sourceSets.main.allSource
+    classifier = 'sources'
 }
 
 task deobfJar(type: Jar) {
+    description = 'Creates a JAR containing the non-obfuscated compiled code.'
     from sourceSets.main.output
-    classifier = 'dev'
-    
-    manifest {
-    }
+    classifier = "deobf"
+}
+
+//Adds the artifact types added by this script to the actual artifacts list.
+artifacts {
+    archives sourcesJar
+    archives deobfJar
 }
 
 // https://gist.github.com/matthewprenger/9b2da059b89433a01c1c
@@ -147,7 +76,3 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
 }
 
 signJar.dependsOn build
-
-artifacts {
-    archives deobfJar
-}
