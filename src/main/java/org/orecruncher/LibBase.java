@@ -54,7 +54,6 @@ public class LibBase {
 	@SidedProxy(clientSide = "org.orecruncher.proxy.ProxyClient", serverSide = "org.orecruncher.proxy.Proxy")
 	protected static Proxy proxy;
 	protected static ModLog logger = ModLog.NULL_LOGGER;
-	protected static boolean devMode;
 
 	@Nonnull
 	public static Proxy proxy() {

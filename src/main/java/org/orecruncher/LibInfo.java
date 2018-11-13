@@ -1,4 +1,3 @@
-package org.orecruncher;
 /*
  * Licensed under the MIT License (MIT).
  *
@@ -23,7 +22,7 @@ package org.orecruncher;
  * THE SOFTWARE.
  */
 
-
+package org.orecruncher;
 
 public final class LibInfo {
 
