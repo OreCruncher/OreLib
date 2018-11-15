@@ -36,6 +36,7 @@ import org.orecruncher.lib.Localization;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -53,14 +54,19 @@ public class ProxyClient extends Proxy {
 	}
 
 	@Override
+	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
+		Localization.initialize(Side.CLIENT, LibInfo.MOD_ID);
+	}
+
+	@Override
 	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
 		// Patch up metadata
 		final ModMetadata data = ForgeUtils.getModMetadata(LibInfo.MOD_ID);
 		if (data != null) {
-			data.name = Localization.format("orelib.metadata.Name");
-			data.credits = Localization.format("orelib.metadata.Credits");
-			data.description = Localization.format("orelib.metadata.Description");
-			data.authorList = Arrays.asList(StringUtils.split(Localization.format("orelib.metadata.Authors"), ','));
+			data.name = Localization.loadString("orelib.metadata.Name");
+			data.credits = Localization.loadString("orelib.metadata.Credits");
+			data.description = Localization.loadString("orelib.metadata.Description");
+			data.authorList = Arrays.asList(StringUtils.split(Localization.loadString("orelib.metadata.Authors"), ','));
 		}
 	}
 

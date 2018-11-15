@@ -26,6 +26,9 @@ package org.orecruncher.proxy;
 
 import javax.annotation.Nonnull;
 
+import org.orecruncher.LibInfo;
+import org.orecruncher.lib.Localization;
+
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -43,7 +46,7 @@ public class Proxy {
 	}
 
 	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
-		// Left intentionally blank
+		Localization.initialize(Side.SERVER, LibInfo.MOD_ID);
 	}
 
 	public void init(@Nonnull final FMLInitializationEvent event) {

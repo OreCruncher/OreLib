@@ -27,9 +27,11 @@ package org.orecruncher;
 import javax.annotation.Nonnull;
 
 import org.apache.logging.log4j.LogManager;
+import org.orecruncher.lib.VersionChecker;
 import org.orecruncher.lib.logging.ModLog;
 import org.orecruncher.proxy.Proxy;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -39,6 +41,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 @Mod(modid = LibInfo.MOD_ID, useMetadata = true, dependencies = LibInfo.DEPENDENCIES, version = LibInfo.VERSION, acceptedMinecraftVersions = LibInfo.MINECRAFT_VERSIONS, updateJSON = LibInfo.UPDATE_URL, certificateFingerprint = LibInfo.FINGERPRINT)
 public class LibBase {
@@ -67,6 +71,7 @@ public class LibBase {
 
 	public LibBase() {
 		logger = ModLog.setLogger(LibInfo.MOD_ID, LogManager.getLogger(LibInfo.MOD_ID));
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@EventHandler
@@ -93,4 +98,10 @@ public class LibBase {
 	public void onFingerprintViolation(@Nonnull final FMLFingerprintViolationEvent event) {
 		log().warn("Invalid fingerprint detected!");
 	}
+	
+	@SubscribeEvent
+	public void playerLogin(final PlayerLoggedInEvent event) {
+		new VersionChecker(LibInfo.MOD_ID, "orelib.msg.NewVersion").playerLogin(event);
+	}
+
 }
