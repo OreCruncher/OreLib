@@ -27,11 +27,13 @@ package org.orecruncher.lib;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.orecruncher.LibBase;
 import org.orecruncher.lib.compat.I18nUtil;
 import org.orecruncher.lib.compat.LocaleUtil;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.Locale;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 
 public final class Localization {
@@ -42,6 +44,10 @@ public final class Localization {
 		public abstract String format(final String translateKey, final Object... parameters);
 
 		public abstract String loadString(final String translateKey);
+
+		public void loadResources(@Nonnull final ResourceLocation loc) {
+
+		}
 	}
 
 	private static class ClientImpl extends Local {
@@ -65,10 +71,6 @@ public final class Localization {
 
 		private final Translations xlate = new Translations();
 
-		public ServerImpl(@Nonnull final String modId) {
-			this.xlate.load("/assets/" + modId + "/lang/", Translations.DEFAULT_LANGUAGE);
-		}
-
 		@Override
 		public String format(final String translateKey, final Object... parameters) {
 			return this.xlate.format(translateKey, parameters);
@@ -78,16 +80,24 @@ public final class Localization {
 		public String loadString(final String translateKey) {
 			return this.xlate.loadString(translateKey);
 		}
+
+		@Override
+		public void loadResources(@Nonnull final ResourceLocation loc) {
+			this.xlate.load(loc);
+		}
 	}
 
 	public static void initialize(@Nonnull final Side side, @Nonnull final String modId) {
 		if (impl == null) {
 			if (side == Side.SERVER) {
-				impl = new ServerImpl(modId);
+				impl = new ServerImpl();
 			} else {
 				impl = new ClientImpl();
 			}
 		}
+		final ResourceLocation loc = new ResourceLocation(modId, Translations.DEFAULT_LANGUAGE);
+		LibBase.log().info("Loading language resources [%s]", loc.toString());
+		impl.loadResources(loc);
 	}
 
 	@Nonnull

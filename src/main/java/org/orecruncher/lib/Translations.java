@@ -41,6 +41,7 @@ import com.google.common.base.Predicate;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 
 public class Translations {
 
@@ -69,6 +70,16 @@ public class Translations {
 				result.add(mcLang);
 		}
 		return result;
+	}
+
+	public void load(@Nonnull final ResourceLocation loc) {
+		final String assetName = "/assets/" + loc.getNamespace() + "/lang/" + loc.getPath() + ".lang";
+		try (final InputStream stream = Translations.class.getResourceAsStream(assetName)) {
+			if (stream != null)
+				merge(stream);
+		} catch (final Throwable t) {
+			LibLog.log().error("Error merging language " + assetName, t);
+		}
 	}
 
 	public void load(@Nonnull final String assetRoot, @Nullable final String... lang) {
