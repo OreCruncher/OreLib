@@ -11,9 +11,6 @@
 		"authorList": [
 			"OreCruncher"
 		],
-		"screenshots": [
-		],
-		"dependencies": [
-		]
+		"logoFile": "assets/orelib/textures/logo.png"
 	}
 ]
