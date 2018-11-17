@@ -42,8 +42,9 @@ processResources
     }
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+task sourcesJar(type: Jar) {
     description = 'Creates a JAR containing the source code.'
+ 	dependsOn reobfJar
     from sourceSets.main.allSource
     classifier = 'sources'
 }
@@ -54,25 +55,27 @@ task deobfJar(type: Jar) {
     classifier = "deobf"
 }
 
-//Adds the artifact types added by this script to the actual artifacts list.
-artifacts {
-    archives sourcesJar
-    archives deobfJar
-}
-
 // https://gist.github.com/matthewprenger/9b2da059b89433a01c1c
-task signJar(type: SignJar, dependsOn: reobfJar) {
+task signJar(type: SignJar) {
 
     onlyIf { // Skip the task if our secret data isn't available
         project.hasProperty('keyStore')
     }
 
+ 	dependsOn reobfJar
+ 
     keyStore = project.keyStore // This needs to be a path to the keystore file
     alias = project.keyStoreAlias
     storePass = project.keyStorePass
     keyPass = project.keyStoreKeyPass
     inputFile = jar.archivePath
     outputFile = jar.archivePath
+}
+
+//Adds the artifact types added by this script to the actual artifacts list.
+artifacts {
+    archives sourcesJar
+    archives deobfJar
 }
 
 signJar.dependsOn build
