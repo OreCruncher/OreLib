@@ -8,68 +8,91 @@ buildscript {
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply from: 'configuration.gradle'
+if (file('secrets.properties').exists()) {
+	println "Loading parameters from secrets.properties"
+	ext.secrets = new Properties()
+	file('secrets.properties').withReader {secrets.load(it)}
+}
 
-sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
-compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
+allprojects {
+
+	apply plugin: 'net.minecraftforge.gradle.forge'
+	apply from: 'configuration.gradle'
+	
+	sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+	compileJava {
+	    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+	}
+	
+	minecraft {
+	    runDir = "run"
+	    replace '@VERSION@', project.ext.modVersion
+	    replace '@FINGERPRINT@', project.ext.fingerprint
+	    replace '@UPDATEURL@', project.ext.updateurl
+	    mappings = project.ext.snapshot
+	}
+	
+	jar {
+	    manifest {
+	        attributes 'Maven-Artifact': "${project.group}:${project.archivesBaseName}:${project.version}"
+	    }
+	}
+	
+	processResources {
+	    // this will ensure that this task is redone when the versions change.
+	    inputs.property "version", project.version
+	    inputs.property "mcversion", project.minecraft.version
+	
+	    // replace stuff in mcmod.info, nothing else
+	    from(sourceSets.main.resources.srcDirs) {
+	        include 'mcmod.info'
+	                
+	        // replace version and mcversion
+	        expand 'version':project.version, 'mcversion':project.minecraft.version
+	    }
+	        
+	    // copy everything else, thats not the mcmod.info
+	    from(sourceSets.main.resources.srcDirs) {
+	        exclude 'mcmod.info'
+	    }
+	}
+	
+	task sourcesJar(type: Jar) {
+	    description = 'Creates a JAR containing the source code.'
+	 	dependsOn reobfJar
+	    from sourceSets.main.allSource
+	    classifier = 'sources'
+	}
+	
+	task deobfJar(type: Jar) {
+	    description = 'Creates a JAR containing the non-obfuscated compiled code.'
+	    from sourceSets.main.output
+	    from sourceSets.main.allSource
+	    manifest {
+	        attributes 'Maven-Artifact': "${project.group}:${project.archivesBaseName}:${project.version}"
+	    }
+	    classifier = "deobf"
+	}
+	
+	// https://gist.github.com/matthewprenger/9b2da059b89433a01c1c
+	task signJar(type: SignJar, dependsOn: reobfJar) {
+	    onlyIf { // Skip the task if our secret data isn't available
+	        project.hasProperty('keyStore')
+	    }
+	    keyStore = project.keyStore // This needs to be a path to the keystore file
+	    alias = project.keyStoreAlias
+	    storePass = project.keyStorePass
+	    keyPass = project.keyStoreKeyPass
+	    inputFile = jar.archivePath
+	    outputFile = jar.archivePath
+	}
+
 }
 
 minecraft {
-    runDir = "run"
-    replace '@VERSION@', project.ext.modVersion
-    mappings = project.ext.snapshot
-}
-
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+	if (project.ext.has('secrets')) {
+    	clientRunArgs = ["--uuid ${secrets.uuid}", "--username ${secrets.username}"]
     }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
-
-task sourcesJar(type: Jar) {
-    description = 'Creates a JAR containing the source code.'
- 	dependsOn reobfJar
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-task deobfJar(type: Jar) {
-    description = 'Creates a JAR containing the non-obfuscated compiled code.'
-    from sourceSets.main.output
-    classifier = "deobf"
-}
-
-// https://gist.github.com/matthewprenger/9b2da059b89433a01c1c
-task signJar(type: SignJar) {
-
-    onlyIf { // Skip the task if our secret data isn't available
-        project.hasProperty('keyStore')
-    }
-
- 	dependsOn reobfJar
- 
-    keyStore = project.keyStore // This needs to be a path to the keystore file
-    alias = project.keyStoreAlias
-    storePass = project.keyStorePass
-    keyPass = project.keyStoreKeyPass
-    inputFile = jar.archivePath
-    outputFile = jar.archivePath
 }
 
 //Adds the artifact types added by this script to the actual artifacts list.
