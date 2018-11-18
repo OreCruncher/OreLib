@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+
 import org.apache.commons.lang3.StringUtils;
 import org.orecruncher.lib.logging.ModLog;
 
@@ -37,11 +38,9 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 public class ExpressionCache {
 
 	protected final ModLog logger;
-	protected final List<DynamicVariantList> variants = new ArrayList<>();
+	protected final List<IDynamicVariant<?>> variants = new ArrayList<>();
 	protected final Map<String, LazyVariant> cache = new Reference2ObjectOpenHashMap<>();
 	protected final List<String> naughtyList = new ArrayList<>();
-
-	protected List<IDynamicVariant<?>> cachedList;
 
 	public ExpressionCache(@Nonnull final ModLog logger) {
 		this.logger = logger;
@@ -52,12 +51,13 @@ public class ExpressionCache {
 	 * using this cache will automatically have these variables added to them. These
 	 * variants will be updated when the ExpressionCache gets ticked.
 	 *
-	 * @param dvl
-	 *            DynamicVariantList to add to the cache
+	 * @param dvl DynamicVariantList to add to the cache
 	 */
 	public void add(@Nonnull final DynamicVariantList dvl) {
-		this.variants.add(dvl);
-		this.cachedList = null;
+		this.variants.addAll(dvl.getList());
+		Collections.sort(this.variants, (o1, o2) -> {
+			return o1.getName().compareTo(o2.getName());
+		});
 	}
 
 	/**
@@ -80,22 +80,14 @@ public class ExpressionCache {
 	 */
 	@Nonnull
 	public List<IDynamicVariant<?>> getVariantList() {
-		if (this.cachedList == null) {
-			this.cachedList = new ArrayList<>();
-			this.variants.forEach(dvl -> this.cachedList.addAll(dvl.getList()));
-			Collections.sort(this.cachedList, (o1, o2) -> {
-				return o1.getName().compareTo(o2.getName());
-			});
-		}
-
-		return this.cachedList;
+		return new ArrayList<>(this.variants);
 	}
 
 	/**
-	 * Ticks the internally cached DynamicVariableList entities.
+	 * Resets the internally cached DynamicVariableList entities.
 	 */
-	public void update() {
-		this.variants.forEach(DynamicVariantList::update);
+	public void reset() {
+		this.variants.forEach(IDynamicVariant::reset);
 	}
 
 	/**
@@ -108,8 +100,7 @@ public class ExpressionCache {
 	 * Expressions are cached. If multiple requests come in for the same expression
 	 * the cached version is reused.
 	 *
-	 * @param expression
-	 *            The expression to compile
+	 * @param expression The expression to compile
 	 * @return The compiled expression. If there was a failure the resulting
 	 *         expression will have the error message.
 	 */
@@ -121,7 +112,7 @@ public class ExpressionCache {
 			exp = this.cache.get(expression);
 			if (exp == null) {
 				final Expression x = new Expression(expression);
-				this.variants.forEach(dvl -> dvl.attach(x));
+				this.variants.forEach(v -> x.addVariable((Variant) v));
 				exp = x.getProgram();
 				this.cache.put(expression, exp);
 			}
@@ -147,8 +138,7 @@ public class ExpressionCache {
 	/**
 	 * Evaluates the expression and returns the result as a boolean.
 	 *
-	 * @param expression
-	 *            The expression to evaluate
+	 * @param expression The expression to evaluate
 	 * @return true of the expression evaluates true, false otherwise
 	 */
 	public boolean check(@Nonnull final String expression) {

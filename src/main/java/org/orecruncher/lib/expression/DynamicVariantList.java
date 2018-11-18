@@ -38,11 +38,11 @@ public class DynamicVariantList {
 	}
 
 	/**
-	 * Called to update the state of the dynamic variants contain within the list.
+	 * Called to reset the state of the dynamic variants contain within the list.
 	 * Restricted to package scope.
 	 */
-	void update() {
-		this.variants.forEach(IDynamicVariant::update);
+	void reset() {
+		this.variants.forEach(IDynamicVariant::reset);
 	}
 
 	/**

@@ -101,4 +101,4 @@ artifacts {
     archives deobfJar
 }
 
-signJar.dependsOn build
+build.dependsOn signJar

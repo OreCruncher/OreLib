@@ -28,6 +28,8 @@ public interface IDynamicVariant<T extends Variant> {
 
 	String getName();
 
+	void reset();
+	
 	void update();
 
 	String asString();

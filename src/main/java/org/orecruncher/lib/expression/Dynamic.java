@@ -35,20 +35,158 @@ public final class Dynamic {
 	}
 
 	public abstract static class DynamicNumber extends NumberValue implements IDynamicVariant<NumberValue> {
+		private boolean needsSet = true;
+
 		public DynamicNumber(@Nonnull final String name) {
 			super(name);
+		}
+
+		@Override
+		public void reset() {
+			this.needsSet = true;
+		}
+
+		@Override
+		public float asNumber() {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.asNumber();
+		}
+
+		@Override
+		@Nonnull
+		public String asString() {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.asString();
+		}
+
+		@Override
+		public boolean asBoolean() {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.asBoolean();
+		}
+
+		// Operator support in case of strings
+		@Override
+		@Nonnull
+		public Variant add(@Nonnull final Variant term) {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.add(term);
 		}
 	}
 
 	public abstract static class DynamicString extends StringValue implements IDynamicVariant<StringValue> {
+		private boolean needsSet = true;
+
 		public DynamicString(@Nonnull final String name) {
 			super(name, StringUtils.EMPTY);
+		}
+
+		@Override
+		public void reset() {
+			this.needsSet = true;
+		}
+
+		@Override
+		public float asNumber() {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.asNumber();
+		}
+
+		@Override
+		@Nonnull
+		public String asString() {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.asString();
+		}
+
+		@Override
+		public boolean asBoolean() {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.asBoolean();
+		}
+
+		// Operator support in case of strings
+		@Override
+		@Nonnull
+		public Variant add(@Nonnull final Variant term) {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.add(term);
 		}
 	}
 
 	public abstract static class DynamicBoolean extends BooleanValue implements IDynamicVariant<BooleanValue> {
+		private boolean needsSet = true;
+
 		public DynamicBoolean(@Nonnull final String name) {
 			super(name);
+		}
+
+		@Override
+		public void reset() {
+			this.needsSet = true;
+		}
+
+		@Override
+		public float asNumber() {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.asNumber();
+		}
+
+		@Override
+		@Nonnull
+		public String asString() {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.asString();
+		}
+
+		@Override
+		public boolean asBoolean() {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.asBoolean();
+		}
+
+		// Operator support in case of strings
+		@Override
+		@Nonnull
+		public Variant add(@Nonnull final Variant term) {
+			if (this.needsSet) {
+				update();
+				this.needsSet = false;
+			}
+			return super.add(term);
 		}
 	}
 
