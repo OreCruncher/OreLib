@@ -91,7 +91,16 @@ allprojects {
 
 minecraft {
 	if (project.ext.has('secrets')) {
-    	clientRunArgs = ["--uuid ${secrets.uuid}", "--username ${secrets.username}"]
+		if (secrets.uuid != null)
+    		clientRunArgs += ["--uuid ${secrets.uuid}"]
+    	if (secrets.username != null)
+    		clientRunArgs += ["--username ${secrets.username}"]
+    	if (secrets.password != null)
+    		clientRunArgs += ["--password ${secrets.password}"]
+    	if (secrets.jvmArgs != null) {
+    		clientJvmArgs += secrets.jvmArgs
+    		serverJvmArgs += secrets.jvmArgs
+    	}
     }
 }
 
