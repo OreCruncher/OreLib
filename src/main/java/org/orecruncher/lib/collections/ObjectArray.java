@@ -87,7 +87,7 @@ public class ObjectArray<T> implements Collection<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void forEach(@Nonnull final Consumer<? super T> consumer) {
-		for (int i = this.insertionIdx - 1; i >= 0; i--)
+		for (int i = 0; i < this.insertionIdx; i++)
 			consumer.accept((T) this.data[i]);
 	}
 
