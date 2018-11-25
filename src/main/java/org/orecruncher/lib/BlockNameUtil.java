@@ -23,8 +23,11 @@
  */
 package org.orecruncher.lib;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,9 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 /*
@@ -48,7 +49,8 @@ public final class BlockNameUtil {
 	}
 
 	// https://www.regexplanet.com/advanced/java/index.html
-	private static final Pattern pattern = Pattern.compile("([\\w\\-]+:[\\w\\.\\-/]+)(\\{.*\\})?\\+?(\\w+)?");
+	private static final Pattern pattern = Pattern
+			.compile("([\\w\\-]+:[\\w\\.\\-/]+)\\[?((?:\\w+=\\w+)?(?:,\\w+=\\w+)*)\\]?\\+?(\\w+)?");
 
 	public final static class NameResult {
 
@@ -63,27 +65,28 @@ public final class BlockNameUtil {
 		protected Block block;
 
 		/*
-		 * The parsed NBTTagCompound after the blockName name, if present
+		 * The parsed properties after the blockName name, if present
 		 */
-		protected NBTTagCompound nbt;
+		protected Map<String, String> properties;
 
 		/*
 		 * Extra information that may have been appended at the end
 		 */
-		private String extras;
+		protected String extras;
 
 		NameResult() {
-			
+
 		}
-		
+
 		NameResult(final Matcher matcher) throws NBTException {
 			this.blockName = matcher.group(1);
 			final Block proposed = Block.REGISTRY.getObject(new ResourceLocation(this.blockName));
 			this.block = proposed == Blocks.AIR ? null : proposed;
 
-			String temp = matcher.group(2);
+			final String temp = matcher.group(2);
 			if (!StringUtils.isEmpty(temp)) {
-				this.nbt = JsonToNBT.getTagFromJson(matcher.group(2));
+				this.properties = Arrays.stream(temp.split(",")).map(elem -> elem.split("="))
+						.collect(Collectors.toMap(e -> e[0], e -> e[1]));
 			}
 
 			this.extras = matcher.group(3);
@@ -99,13 +102,13 @@ public final class BlockNameUtil {
 			return this.block;
 		}
 
-		public boolean hasNBT() {
-			return this.nbt != null;
+		public boolean hasProperties() {
+			return this.properties != null;
 		}
 
 		@Nullable
-		public NBTTagCompound getNBT() {
-			return this.nbt;
+		public Map<String, String> getProperties() {
+			return this.properties;
 		}
 
 		public boolean hasExtras() {
@@ -121,13 +124,16 @@ public final class BlockNameUtil {
 		@Nonnull
 		public String toString() {
 			final StringBuilder builder = new StringBuilder();
-			builder.append('[');
 			if (getBlock() == null)
 				builder.append("*INVALID* ");
 			builder.append(getBlockName());
-			if (hasNBT())
-				builder.append(getNBT().toString());
-			builder.append(']');
+			if (hasProperties()) {
+				builder.append('[');
+				final String props = this.properties.entrySet().stream().map(e -> e.getKey() + '=' + e.getValue())
+						.collect(Collectors.joining(","));
+				builder.append(props);
+				builder.append(']');
+			}
 			return builder.toString();
 		}
 	}
