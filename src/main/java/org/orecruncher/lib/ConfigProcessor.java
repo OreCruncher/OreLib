@@ -37,6 +37,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.orecruncher.lib.math.MathStuff;
 
+import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -129,10 +130,17 @@ public final class ConfigProcessor {
 						: null;
 
 				try {
+					final ConfigCategory cat = config.getCategory(category);
+					Property prop = cat.get(property);
 					final Object fieldValue = field.get(parameters);
 
 					if (fieldValue instanceof Boolean) {
 						final boolean dv = StringUtils.isEmpty(defaultValue) ? false : Boolean.valueOf(defaultValue);
+						if (prop == null || (prop != null && prop.getType() != Property.Type.BOOLEAN)) {
+							cat.remove(property);
+							prop = new Property(property, Boolean.toString(dv), Property.Type.BOOLEAN);
+							cat.put(property, prop);
+						}
 						field.set(parameters, config.getBoolean(property, category, dv, comment));
 					} else if (fieldValue instanceof Integer) {
 						int minInt = Integer.MIN_VALUE;
@@ -144,7 +152,13 @@ public final class ConfigProcessor {
 						}
 						final int dv = StringUtils.isEmpty(defaultValue) ? MathStuff.clamp(0, minInt, maxInt)
 								: Integer.valueOf(defaultValue);
+						if (prop == null || (prop != null && prop.getType() != Property.Type.INTEGER)) {
+							cat.remove(property);
+							prop = new Property(property, Integer.toString(dv), Property.Type.INTEGER);
+							cat.put(property, prop);
+						}
 						field.set(parameters, config.getInt(property, category, dv, minInt, maxInt, comment));
+						prop.setValue(field.getInt(parameters));
 					} else if (fieldValue instanceof Float) {
 						float minFloat = Float.MIN_VALUE;
 						float maxFloat = Float.MAX_VALUE;
@@ -155,7 +169,13 @@ public final class ConfigProcessor {
 						}
 						final float dv = StringUtils.isEmpty(defaultValue) ? MathStuff.clamp(0F, minFloat, maxFloat)
 								: Float.valueOf(defaultValue);
+						if (prop == null || (prop != null && prop.getType() != Property.Type.DOUBLE)) {
+							cat.remove(property);
+							prop = new Property(property, Double.toString(dv), Property.Type.DOUBLE);
+							cat.put(property, prop);
+						}
 						field.set(parameters, config.getFloat(property, category, dv, minFloat, maxFloat, comment));
+						prop.setValue(field.getFloat(parameters));
 					} else if (fieldValue instanceof String) {
 						field.set(parameters, config.getString(property, category, defaultValue, comment));
 					} else if (fieldValue instanceof String[]) {
@@ -164,7 +184,6 @@ public final class ConfigProcessor {
 					}
 
 					// Configure other settings
-					final Property prop = config.getCategory(category).get(property);
 					if (!StringUtils.isEmpty(language))
 						prop.setLanguageKey(language);
 					if (field.getAnnotation(RestartRequired.class) != null) {
