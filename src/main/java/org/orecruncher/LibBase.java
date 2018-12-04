@@ -34,7 +34,7 @@ import org.orecruncher.proxy.Proxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.Mod.InstanceFactory;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -46,10 +46,16 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 @Mod(modid = LibInfo.MOD_ID, useMetadata = true, dependencies = LibInfo.DEPENDENCIES, version = LibInfo.VERSION, acceptedMinecraftVersions = LibInfo.MINECRAFT_VERSIONS, updateJSON = LibInfo.UPDATE_URL, certificateFingerprint = LibInfo.FINGERPRINT)
 public class LibBase {
-
-	@Instance(LibInfo.MOD_ID)
-	protected static LibBase instance;
-
+	
+	private static final ModLog logger;
+	private static final LibBase instance;
+	
+	static {
+		logger = ModLog.setLogger(LibInfo.MOD_ID, LogManager.getLogger(LibInfo.MOD_ID));
+		instance = new LibBase();
+	}
+	
+	@InstanceFactory
 	@Nonnull
 	public static LibBase instance() {
 		return instance;
@@ -57,7 +63,6 @@ public class LibBase {
 
 	@SidedProxy(clientSide = "org.orecruncher.proxy.ProxyClient", serverSide = "org.orecruncher.proxy.Proxy")
 	protected static Proxy proxy;
-	protected static ModLog logger = ModLog.NULL_LOGGER;
 
 	@Nonnull
 	public static Proxy proxy() {
@@ -70,7 +75,6 @@ public class LibBase {
 	}
 
 	public LibBase() {
-		logger = ModLog.setLogger(LibInfo.MOD_ID, LogManager.getLogger(LibInfo.MOD_ID));
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
