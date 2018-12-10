@@ -40,6 +40,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -105,14 +106,16 @@ public final class MCHelper {
 
 	}
 
-	@Nonnull
+	@Nullable
 	public static String nameOf(@Nonnull final Block block) {
-		return Block.REGISTRY.getNameForObject(block).toString();
+		final ResourceLocation res = Block.REGISTRY.getNameForObject(block);
+		return res != null ? res.toString() : null;
 	}
 
-	@Nonnull
+	@Nullable
 	public static String nameOf(@Nonnull final Item item) {
-		return Item.REGISTRY.getNameForObject(item).toString();
+		final ResourceLocation res = Item.REGISTRY.getNameForObject(item);
+		return res != null ? res.toString() : null;
 	}
 
 	@Nullable
@@ -120,7 +123,7 @@ public final class MCHelper {
 		return Item.getByNameOrId(itemName);
 	}
 
-	@Nonnull
+	@Nullable
 	public static Block getBlockByName(@Nonnull final String blockName) {
 		return Block.getBlockFromName(blockName);
 	}

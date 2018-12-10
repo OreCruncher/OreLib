@@ -1,10 +1,10 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/orelib/files",
 	"1.12.2": {
-		"3.5.1.0": "See https://github.com/OreCruncher/OreLib/blob/master/CHANGELOG.md"
+		"3.5.1.1": "See https://github.com/OreCruncher/OreLib/blob/master/CHANGELOG.md"
 	},
 	"promos": {
-		"1.12.2-latest": "3.5.1.0",
-		"1.12.2-recommended": "3.5.1.0"
+		"1.12.2-latest": "3.5.1.1",
+		"1.12.2-recommended": "3.5.1.1"
 	}
 }
