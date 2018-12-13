@@ -1,4 +1,5 @@
-/* This file is part of Dynamic Surroundings, licensed under the MIT License (MIT).
+/* 
+ * Licensed under the MIT License (MIT).
  *
  * Copyright (c) OreCruncher
  *
@@ -32,7 +33,13 @@ import net.minecraft.world.World;
 public final class DiurnalUtils {
 
 	public static enum DayCycle {
-		NO_SKY, SUNRISE, SUNSET, DAYTIME, NIGHTTIME
+		//@formatter:off
+		NO_SKY,
+		SUNRISE,
+		SUNSET,
+		DAYTIME,
+		NIGHTTIME
+		//@formatter:on
 	}
 
 	private DiurnalUtils() {

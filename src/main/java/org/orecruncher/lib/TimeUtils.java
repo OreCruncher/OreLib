@@ -1,5 +1,5 @@
 /*
- * This file is part of Dynamic Surroundings, licensed under the MIT License (MIT).
+ * Licensed under the MIT License (MIT).
  *
  * Copyright (c) Abastro, OreCruncher
  *

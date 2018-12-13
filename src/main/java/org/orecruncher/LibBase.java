@@ -1,5 +1,5 @@
 /*
- * This file is part of OreLib, licensed under the MIT License (MIT).
+ * Licensed under the MIT License (MIT).
  *
  * Copyright (c) OreCruncher
  *

@@ -1,4 +1,5 @@
-/* This file is part of Dynamic Surroundings, licensed under the MIT License (MIT).
+/*
+ * Licensed under the MIT License (MIT).
  *
  * Copyright (c) OreCruncher
  *
@@ -34,13 +35,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class PositionedSoundUtil {
 
-	protected static Field getVolume;
-	protected static Field getPitch;
-
-	static {
-		getVolume = ReflectionHelper.findField(PositionedSound.class, "volume", "field_147662_b");
-		getPitch = ReflectionHelper.findField(PositionedSound.class, "pitch", "field_147663_c");
-	}
+	protected static final Field getVolume = ReflectionHelper.findField(PositionedSound.class, "volume", "field_147662_b");
+	protected static final Field getPitch = ReflectionHelper.findField(PositionedSound.class, "pitch", "field_147663_c");
 
 	public static float getVolume(@Nonnull final PositionedSound sound) {
 		try {
