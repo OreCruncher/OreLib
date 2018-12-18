@@ -1,3 +1,7 @@
+### OreLib-1.12.2-3.5.1.2
+**Fixes**
+* Allow client to connect with a different version of OreLib
+
 ### OreLib-1.12.2-3.5.1.1
 **Fixes**
 * Defensive code for unregistered blocks when looking in registries

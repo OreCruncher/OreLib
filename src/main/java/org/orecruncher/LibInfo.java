@@ -33,6 +33,7 @@ public final class LibInfo {
 	public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2768,);";
 	public static final String UPDATE_URL = "@UPDATEURL@";
 	public static final String FINGERPRINT = "@FINGERPRINT@";
+	public static final String REMOTE_VERSIONS = "*";
 
 	private LibInfo() {
 

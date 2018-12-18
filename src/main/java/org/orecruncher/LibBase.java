@@ -44,7 +44,18 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
-@Mod(modid = LibInfo.MOD_ID, useMetadata = true, dependencies = LibInfo.DEPENDENCIES, version = LibInfo.VERSION, acceptedMinecraftVersions = LibInfo.MINECRAFT_VERSIONS, updateJSON = LibInfo.UPDATE_URL, certificateFingerprint = LibInfo.FINGERPRINT)
+//@formatter:off
+@Mod(
+	modid = LibInfo.MOD_ID,
+	useMetadata = true,
+	dependencies = LibInfo.DEPENDENCIES,
+	version = LibInfo.VERSION,
+	acceptedMinecraftVersions = LibInfo.MINECRAFT_VERSIONS,
+	acceptableRemoteVersions = LibInfo.REMOTE_VERSIONS,
+	updateJSON = LibInfo.UPDATE_URL,
+	certificateFingerprint = LibInfo.FINGERPRINT
+)
+//@formatter:on
 public class LibBase {
 	
 	private static final ModLog logger;
