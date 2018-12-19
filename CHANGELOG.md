@@ -1,3 +1,7 @@
+### OreLib-1.12.2-3.5.1.3
+**Fixes**
+* Some translation keys were incorrect
+
 ### OreLib-1.12.2-3.5.1.2
 **Fixes**
 * Allow client to connect with a different version of OreLib

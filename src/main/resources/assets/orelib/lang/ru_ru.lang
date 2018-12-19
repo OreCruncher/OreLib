@@ -1,0 +1,23 @@
+#PARSE_ESCAPES
+# RU Russian Translations
+orelib.msg.orelib=OreLib
+
+# Проверка версии
+orelib.msg.NewVersion.dsurround=["§6Доступно обновление: §9[",{"text":"§2%1$s §ev%2$s§f","color":"gold","hoverEvent":{"action":"show_text","value":{"text":"Нажмите, чтобы открыть страницу мода на CurseForge","color":"aqua"}},"clickEvent":{"action":"open_url","value":"%3$s"}},"§9]"]
+
+# Обновления данных
+orelib.metadata.Name=§3OreLib Support Library
+orelib.metadata.Credits=§cIt's just a support library, right?§r
+orelib.metadata.Authors=§aOreCruncher§r
+orelib.metadata.Description=Adds functions to support OreCruncher's mods
+
+# Разметка строк
+orelib.format.TimeOfDay=День %1$d, %2$d:%3$02d %4$s
+orelib.format.AM=до полудня
+orelib.format.PM=после полудня
+orelib.format.SessionTime=Время игры %1$d:%2$02d:%3$02d
+orelib.format.NoSky=Без облаков
+orelib.format.Sunrise=Рассвет
+orelib.format.Sunset=Закат
+orelib.format.Daytime=День
+orelib.format.Nighttime=Ночь

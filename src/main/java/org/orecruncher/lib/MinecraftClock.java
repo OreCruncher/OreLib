@@ -32,14 +32,14 @@ import net.minecraft.world.World;
 
 public class MinecraftClock {
 
-	private static final String AM = Localization.format("dsurround.format.AM");
-	private static final String PM = Localization.format("dsurround.format.PM");
-	private static final String NO_SKY = Localization.format("dsurround.format.NoSky");
-	private static final String SUNRISE = Localization.format("dsurround.format.Sunrise");
-	private static final String SUNSET = Localization.format("dsurround.format.Sunset");
-	private static final String DAYTIME = Localization.format("dsurround.format.Daytime");
-	private static final String NIGHTTIME = Localization.format("dsurround.format.Nighttime");
-	private static final String TIME_FORMAT = Localization.loadString("dsurround.format.TimeOfDay");
+	private static final String AM = Localization.format("orelib.format.AM");
+	private static final String PM = Localization.format("orelib.format.PM");
+	private static final String NO_SKY = Localization.format("orelib.format.NoSky");
+	private static final String SUNRISE = Localization.format("orelib.format.Sunrise");
+	private static final String SUNSET = Localization.format("orelib.format.Sunset");
+	private static final String DAYTIME = Localization.format("orelib.format.Daytime");
+	private static final String NIGHTTIME = Localization.format("orelib.format.Nighttime");
+	private static final String TIME_FORMAT = Localization.loadString("orelib.format.TimeOfDay");
 
 	protected int day;
 	protected int hour;
