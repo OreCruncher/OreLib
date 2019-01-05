@@ -29,6 +29,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.orecruncher.lib.ReflectedField.ObjectField;
 import org.orecruncher.lib.chunk.ClientChunkCache;
 import org.orecruncher.lib.chunk.IBlockAccessEx;
 import org.orecruncher.lib.collections.ObjectArray;
@@ -43,12 +44,20 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public final class WorldUtils {
+
+	//@formatter:off
+	private static final ObjectField<WorldClient, Set<Entity>> entityList =
+		new ObjectField<>(
+			WorldClient.class,
+			"entityList",
+			"field_73032_d"
+		);
+	//@formatter:on
 
 	private WorldUtils() {
 
@@ -122,8 +131,7 @@ public final class WorldUtils {
 			final double viewZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
 			frustum.setPosition(viewX, viewY, viewZ);
 			final WorldClient client = (WorldClient) viewer.getEntityWorld();
-			final Set<Entity> entities = ReflectionHelper.getPrivateValue(WorldClient.class, client,
-					new String[] { "entityList", "field_73032_d", "J" });
+			final Set<Entity> entities = entityList.get(client);
 			for (final Entity entity : entities)
 				if (entity != null && entity.isEntityAlive() && viewer.getDistanceSq(entity) <= rangeSq
 						&& (entity.ignoreFrustumCheck

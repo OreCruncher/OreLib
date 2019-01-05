@@ -23,30 +23,26 @@
  */
 package org.orecruncher.lib.compat;
 
-import java.lang.reflect.Field;
-
 import javax.annotation.Nonnull;
+
+import org.orecruncher.lib.ReflectedField.ObjectField;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public final class EntityLivingUtil {
 
-	private static final Field attackTarget = ReflectionHelper.findField(EntityLiving.class, "attackTarget",
-			"field_70696_bz");
-
-	private EntityLivingUtil() {
-
-	}
+	//@formatter:off
+	private static final ObjectField<EntityLiving, EntityLivingBase> attackTarget =
+		new ObjectField<>(
+			EntityLiving.class,
+			"attackTarget",
+			"field_70696_bz"
+		);
+	//@formatter:on
 
 	public static EntityLivingBase getAttackTarget(@Nonnull final EntityLiving entity) {
-		try {
-			return (EntityLivingBase) attackTarget.get(entity);
-		} catch (@Nonnull final Throwable t) {
-			;
-		}
-		return null;
+		return attackTarget.get(entity);
 	}
 
 }

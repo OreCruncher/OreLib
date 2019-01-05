@@ -23,31 +23,27 @@
  */
 package org.orecruncher.lib.compat;
 
-import java.lang.reflect.Field;
+import org.orecruncher.lib.ReflectedField.ObjectField;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.Locale;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public final class I18nUtil {
 
-	private static Field i18nLocale = ReflectionHelper.findField(I18n.class, "i18nLocale", "field_135054_a");
-
-	private I18nUtil() {
-
-	}
-
+	//@formatter:off
+	private static final ObjectField<I18n, Locale> i18nLocale =
+		new ObjectField<>(
+			I18n.class,
+			"i18nLocale",
+			"field_135054_a"
+		);
+	//@formatter:on
+	
 	public static Locale getLocale() {
-		if (i18nLocale != null) {
-			try {
-				return (Locale) i18nLocale.get(null);
-			} catch (final Throwable t) {
-			}
-		}
-		return null;
+		return i18nLocale.get(null);
 	}
 
 }

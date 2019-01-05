@@ -23,39 +23,32 @@
  */
 package org.orecruncher.lib.compat;
 
-import java.lang.reflect.Field;
-
 import javax.annotation.Nonnull;
+
+import org.orecruncher.lib.ReflectedField.IntegerField;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public final class EntityUtil {
 
-	private static Field nextStepDistance = ReflectionHelper.findField(Entity.class, "nextStepDistance",
-			"field_70150_b");
-
-	private EntityUtil() {
-
-	}
-
+	//@formatter:off
+	private static final IntegerField<Entity> nextStepDistance =
+		new IntegerField<>(
+			Entity.class,
+			"nextStepDistance",
+			"field_70150_b",
+			0
+		);
+	//@formatter:on
+	
 	public static int getNextStepDistance(@Nonnull final Entity entity) {
-		try {
-			return nextStepDistance.getInt(entity);
-		} catch (@Nonnull final Throwable t) {
-			;
-		}
-		return 0;
+		return nextStepDistance.get(entity);
 	}
 
 	public static void setNextStepDistance(@Nonnull final Entity entity, final int dist) {
-		try {
-			nextStepDistance.setInt(entity, dist);
-		} catch (@Nonnull final Throwable t) {
-			;
-		}
+		nextStepDistance.set(entity, dist);
 	}
 
 	@Nonnull

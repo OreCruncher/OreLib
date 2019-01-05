@@ -32,15 +32,12 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SuppressWarnings("deprecation")
 @SideOnly(Side.CLIENT)
 public final class LocaleUtil {
 
 	private static Method tpk = ReflectionHelper.findMethod(Locale.class, "translateKeyPrivate", "func_135026_c",
 			String.class);
-
-	private LocaleUtil() {
-
-	}
 
 	public static String translateKeyPrivate(@Nonnull final Locale locale, @Nonnull final String key) {
 		try {

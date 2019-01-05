@@ -24,29 +24,26 @@
 
 package org.orecruncher.lib.compat;
 
-import java.lang.reflect.Field;
-
 import javax.annotation.Nonnull;
 
+import org.orecruncher.lib.ReflectedField.IntegerField;
+
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class EntityVillagerUtil {
-
-	private static final Field careerId = ReflectionHelper.findField(EntityVillager.class, "careerId",
-			"field_175563_bv");
-
-	private EntityVillagerUtil() {
-
-	}
+	
+	//@formatter:off
+	private static final IntegerField<EntityVillager> careerId =
+		new IntegerField<>(
+			EntityVillager.class,
+			"careerId",
+			"field_175563_bv",
+			1
+		);
+	//@formatter:on
 
 	public static int getCareerId(@Nonnull final EntityVillager entity) {
-		try {
-			return careerId.getInt(entity);
-		} catch (@Nonnull final Throwable t) {
-			// Nothing...
-		}
-		return 1;
+		return careerId.get(entity);
 	}
 
 }

@@ -23,35 +23,39 @@
  */
 package org.orecruncher.lib.compat;
 
-import java.lang.reflect.Field;
-
 import javax.annotation.Nonnull;
 
+import org.orecruncher.lib.ReflectedField.FloatField;
+
 import net.minecraft.client.audio.PositionedSound;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class PositionedSoundUtil {
 
-	protected static final Field getVolume = ReflectionHelper.findField(PositionedSound.class, "volume", "field_147662_b");
-	protected static final Field getPitch = ReflectionHelper.findField(PositionedSound.class, "pitch", "field_147663_c");
+	//@formatter:off
+	private static final FloatField<PositionedSound> getVolume =
+		new FloatField<>(
+			PositionedSound.class,
+			"volume",
+			"field_147662_b"
+		);
+
+	private static final FloatField<PositionedSound> getPitch =
+		new FloatField<>(
+			PositionedSound.class,
+			"pitch",
+			"field_147663_c"
+		);
+	//@formatter:on
 
 	public static float getVolume(@Nonnull final PositionedSound sound) {
-		try {
-			return getVolume.getFloat(sound);
-		} catch (final Throwable t) {
-			return 1F;
-		}
+		return getVolume.get(sound);
 	}
 
 	public static float getPitch(@Nonnull final PositionedSound sound) {
-		try {
-			return getPitch.getFloat(sound);
-		} catch (final Throwable t) {
-			return 1F;
-		}
+		return getPitch.get(sound);
 	}
 
 }

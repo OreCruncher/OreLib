@@ -23,41 +23,37 @@
  */
 package org.orecruncher.lib.compat;
 
-import java.lang.reflect.Field;
-
 import javax.annotation.Nonnull;
+
+import org.orecruncher.lib.ReflectedField.BooleanField;
+import org.orecruncher.lib.ReflectedField.ObjectField;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public final class EntityLivingBaseUtil {
 
-	private static Field hideParticles = ReflectionHelper.findField(EntityLivingBase.class, "HIDE_PARTICLES",
-			"field_184634_g");
-	private static Field isJumping = ReflectionHelper.findField(EntityLivingBase.class, "isJumping", "field_70703_bu");
-
-	private EntityLivingBaseUtil() {
-
-	}
-
-	@SuppressWarnings("unchecked")
+	//@formatter:off
+	private static final ObjectField<EntityLivingBase, DataParameter<Boolean>> hideParticles =
+		new ObjectField<>(
+			EntityLivingBase.class,
+			"HIDE_PARTICLES",
+			"field_184634_g"
+		);
+	private static final BooleanField<EntityLivingBase> isJumping = 
+		new BooleanField<>(
+			EntityLivingBase.class,
+			"isJumping",
+			"field_70703_bu"
+		);
+	//@formatter:on
+	
 	public static DataParameter<Boolean> getHideParticles() {
-		try {
-			return (DataParameter<Boolean>) hideParticles.get(null);
-		} catch (@Nonnull final Throwable t) {
-			;
-		}
-		return null;
+		return hideParticles.get(null);
 	}
 
 	public static boolean isJumping(@Nonnull final EntityLivingBase entity) {
-		try {
-			return isJumping.getBoolean(entity);
-		} catch (@Nonnull final Throwable t) {
-			;
-		}
-		return false;
+		return isJumping.get(entity);
 	}
 
 }

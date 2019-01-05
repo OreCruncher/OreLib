@@ -23,40 +23,32 @@
  */
 package org.orecruncher.lib.compat;
 
-import java.lang.reflect.Field;
-
 import javax.annotation.Nonnull;
 
+import org.orecruncher.lib.ReflectedField.BooleanField;
+
 import net.minecraft.client.renderer.EntityRenderer;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public final class EntityRendererUtil {
-
-	private static final Field drawBlockOutline = ReflectionHelper.findField(EntityRenderer.class, "drawBlockOutline",
-			"field_175073_D");
-
-	private EntityRendererUtil() {
-
-	}
+	
+	//@formatter:off
+	private static final BooleanField<EntityRenderer> drawblockOutline =
+		new BooleanField<>(
+			EntityRenderer.class,
+			"drawBlockOutline",
+			"field_175073_D"
+		);
+	//@formatter:on
 
 	public static boolean getDrawBlockOutline(@Nonnull final EntityRenderer renderer) {
-		try {
-			return drawBlockOutline.getBoolean(renderer);
-		} catch (@Nonnull final Throwable t) {
-			;
-		}
-		return true;
+		return drawblockOutline.get(renderer);
 	}
 
 	public static void setDrawBlockOutline(@Nonnull final EntityRenderer renderer, final boolean value) {
-		try {
-			drawBlockOutline.setBoolean(renderer, value);
-		} catch (@Nonnull final Throwable t) {
-			;
-		}
+		drawblockOutline.set(renderer, value);
 	}
 
 }
