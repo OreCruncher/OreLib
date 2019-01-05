@@ -1,3 +1,7 @@
+### OreLib-1.12.2-3.5.2.0
+**Requirements**
+* Forge 2779+
+
 ### OreLib-1.12.2-3.5.1.3
 **Fixes**
 * Some translation keys were incorrect
