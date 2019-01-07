@@ -1,3 +1,7 @@
+### OreLib-1.12.2-3.5.2.1
+**Requirements**
+* Made changes to make it compatible with older versions of Forge.  2768+ Required.
+
 ### OreLib-1.12.2-3.5.2.0
 **Requirements**
 * Forge 2779+
