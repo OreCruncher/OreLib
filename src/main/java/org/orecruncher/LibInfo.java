@@ -30,7 +30,7 @@ public final class LibInfo {
 	public static final String MOD_NAME = "OreLib";
 	public static final String VERSION = "@VERSION@";
 	public static final String MINECRAFT_VERSIONS = "[1.12.2,)";
-	public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2779,);";
+	public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2768,);";
 	public static final String UPDATE_URL = "@UPDATEURL@";
 	public static final String FINGERPRINT = "@FINGERPRINT@";
 	public static final String REMOTE_VERSIONS = "*";

@@ -34,9 +34,21 @@ import org.orecruncher.LibBase;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 
-import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
+import net.minecraftforge.fml.relauncher.CoreModManager;
 
 public class ReflectedField {
+
+	protected static boolean isDeobfuscatedEnvironment = false;
+
+	static {
+		try {
+			final Field f = CoreModManager.class.getDeclaredField("deobfuscatedEnvironment");
+			f.setAccessible(true);
+			isDeobfuscatedEnvironment = f.getBoolean(null);
+		} catch (@Nonnull final Throwable t) {
+			LibBase.log().error("Unable to determine obsfucated environment", t);
+		}
+	}
 
 	protected final String className;
 	protected final String fieldName;
@@ -72,8 +84,7 @@ public class ReflectedField {
 	@Nullable
 	private static Field resolve(@Nonnull final Class<?> clazz, @Nonnull final String fieldName,
 			@Nullable final String obfName) {
-		final String nameToFind = FMLLaunchHandler.isDeobfuscatedEnvironment() ? fieldName
-				: MoreObjects.firstNonNull(obfName, fieldName);
+		final String nameToFind = isDeobfuscatedEnvironment ? fieldName : MoreObjects.firstNonNull(obfName, fieldName);
 		try {
 			final Field f = clazz.getDeclaredField(nameToFind);
 			f.setAccessible(true);
@@ -121,7 +132,7 @@ public class ReflectedField {
 			super(className, fieldName, obfName);
 			this.defaultValue = null;
 		}
-		
+
 		public ObjectField(@Nonnull final Class<T> clazz, @Nonnull final String fieldName,
 				@Nonnull final String obfName) {
 			this(clazz, fieldName, obfName, null);
