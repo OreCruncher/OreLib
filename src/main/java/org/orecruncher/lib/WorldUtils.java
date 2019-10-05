@@ -24,12 +24,10 @@
 
 package org.orecruncher.lib;
 
-import java.util.Set;
-
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.orecruncher.lib.ReflectedField.ObjectField;
 import org.orecruncher.lib.chunk.ClientChunkCache;
 import org.orecruncher.lib.chunk.IBlockAccessEx;
 import org.orecruncher.lib.collections.ObjectArray;
@@ -37,7 +35,6 @@ import org.orecruncher.lib.collections.ObjectArray;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -49,15 +46,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public final class WorldUtils {
-
-	//@formatter:off
-	private static final ObjectField<WorldClient, Set<Entity>> entityList =
-		new ObjectField<>(
-			WorldClient.class,
-			"entityList",
-			"field_73032_d"
-		);
-	//@formatter:on
 
 	private WorldUtils() {
 
@@ -130,8 +118,7 @@ public final class WorldUtils {
 			final double viewY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
 			final double viewZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
 			frustum.setPosition(viewX, viewY, viewZ);
-			final WorldClient client = (WorldClient) viewer.getEntityWorld();
-			final Set<Entity> entities = entityList.get(client);
+			final List<Entity> entities = viewer.getEntityWorld().getLoadedEntityList();
 			for (final Entity entity : entities)
 				if (entity != null && entity.isEntityAlive() && viewer.getDistanceSq(entity) <= rangeSq
 						&& (entity.ignoreFrustumCheck
