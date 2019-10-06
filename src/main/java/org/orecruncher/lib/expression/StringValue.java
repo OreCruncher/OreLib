@@ -58,7 +58,9 @@ public class StringValue extends Variant {
 
 	@Override
 	public boolean asBoolean() {
-		return !("FALSE".equalsIgnoreCase(this.value));
+		// Eliminates a lot of false positive situations.  The expression system provides a string
+		// on error so we have to make sure it does not match otherwise bad things will happen.
+		return "TRUE".equalsIgnoreCase(this.value);
 	}
 
 	@Override
