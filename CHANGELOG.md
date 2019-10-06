@@ -1,3 +1,10 @@
+### OreLib-1.12.2-3.5.2.3
+**Requirements**
+* Forge 2768+
+
+**Fixes**
+* Client compatibility with Advanced Rocketry.  Addresses crash with Dynamic Surroundings.
+
 ### OreLib-1.12.2-3.5.2.2
 **Requirements**
 * Forge 2768+
