@@ -23,27 +23,29 @@
  */
 package org.orecruncher.lib.compat;
 
-import java.lang.reflect.Method;
-
 import javax.annotation.Nonnull;
 
+import org.orecruncher.lib.ReflectedMethod;
+
 import net.minecraft.client.resources.Locale;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public final class LocaleUtil {
 
-	private static Method tpk = ReflectionHelper.findMethod(Locale.class, "translateKeyPrivate", "func_135026_c",
-			String.class);
-
+	//formatter:off
+	private static final ReflectedMethod<String> tpk = new ReflectedMethod<>(
+			Locale.class,
+			"translateKeyPrivate",
+			"func_135026_c",
+			String.class
+		);
+	//formatter:on
+	
 	public static String translateKeyPrivate(@Nonnull final Locale locale, @Nonnull final String key) {
-		try {
-			return (String) tpk.invoke(locale, key);
-		} catch (@Nonnull final Throwable t) {
-			return key;
-		}
+		String result = tpk.invoke(locale, key);
+		return result == null ? key : result;
 	}
 
 }
