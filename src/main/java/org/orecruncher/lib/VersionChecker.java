@@ -34,6 +34,8 @@ import net.minecraftforge.common.ForgeVersion.CheckResult;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class VersionChecker {
 
@@ -75,6 +77,19 @@ public final class VersionChecker {
 					t.printStackTrace();
 				}
 			}
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static void doCheck(@Nonnull final PlayerLoggedInEvent event, @Nonnull String modId) {
+		doCheck(event, modId, modId + ".msg.NewVersion");
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static void doCheck(@Nonnull final PlayerLoggedInEvent event, @Nonnull String modId,
+			@Nonnull String msgId) {
+		if (event.player instanceof EntityPlayer) {
+			new VersionChecker(modId, msgId).playerLogin(event);
 		}
 	}
 }

@@ -33,6 +33,7 @@ import org.orecruncher.lib.math.MathStuff;
 @SuppressWarnings("serial")
 public final class XorShiftRandom extends Random {
 
+	private static final long PRIME = 402653189;
 	private static final double DOUBLE_UNIT = 0x1.0p-53; // 1.0 / (1L << 53);
 	private static final float FLOAT_UNIT = 0x1.0p-24f; // 1.0 / (1L << 24);
 
@@ -48,7 +49,7 @@ public final class XorShiftRandom extends Random {
 	private double nextGaussian = 0D;
 
 	public XorShiftRandom() {
-		this(System.currentTimeMillis() ^ System.nanoTime());
+		this(System.nanoTime() * PRIME + Thread.currentThread().getId());
 	}
 
 	public XorShiftRandom(final long seed) {

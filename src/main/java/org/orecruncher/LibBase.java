@@ -117,7 +117,7 @@ public class LibBase {
 	@SubscribeEvent
 	public void playerLogin(final PlayerLoggedInEvent event) {
 		if (LibOptions.logging.enableVersionCheck)
-			new VersionChecker(LibInfo.MOD_ID, "orelib.msg.NewVersion").playerLogin(event);
+			VersionChecker.doCheck(event, LibInfo.MOD_ID);
 	}
 
 }
