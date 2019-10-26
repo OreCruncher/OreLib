@@ -141,21 +141,21 @@ public final class RayTrace {
 
 	// From World.rayTraceBlocks()
 	@Nullable
-	public static RayTraceResult rayTraceBlocks(@Nonnull final World world, Vec3d vec31, Vec3d vec32,
+	public static RayTraceResult rayTraceBlocks(@Nonnull final World world, Vec3d eyePosition, Vec3d rangePosition,
 			boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
 
 		final BlockPos.MutableBlockPos blockpos = new BlockPos.MutableBlockPos();
 		final IBlockAccessEx provider = WorldUtils.getDefaultBlockStateProvider();
 
-		if (!Double.isNaN(vec31.x) && !Double.isNaN(vec31.y) && !Double.isNaN(vec31.z)) {
-			if (!Double.isNaN(vec32.x) && !Double.isNaN(vec32.y) && !Double.isNaN(vec32.z)) {
-				final int i = MathStuff.floor(vec32.x);
-				final int j = MathStuff.floor(vec32.y);
-				final int k = MathStuff.floor(vec32.z);
+		if (!Double.isNaN(eyePosition.x) && !Double.isNaN(eyePosition.y) && !Double.isNaN(eyePosition.z)) {
+			if (!Double.isNaN(rangePosition.x) && !Double.isNaN(rangePosition.y) && !Double.isNaN(rangePosition.z)) {
+				final int i = MathStuff.floor(rangePosition.x);
+				final int j = MathStuff.floor(rangePosition.y);
+				final int k = MathStuff.floor(rangePosition.z);
 
-				int l = MathStuff.floor(vec31.x);
-				int i1 = MathStuff.floor(vec31.y);
-				int j1 = MathStuff.floor(vec31.z);
+				int l = MathStuff.floor(eyePosition.x);
+				int i1 = MathStuff.floor(eyePosition.y);
+				int j1 = MathStuff.floor(eyePosition.z);
 
 				blockpos.setPos(l, i1, j1);
 				IBlockState iblockstate = provider.getBlockState(blockpos);
@@ -164,7 +164,7 @@ public final class RayTrace {
 				if ((!ignoreBlockWithoutBoundingBox
 						|| iblockstate.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB)
 						&& block.canCollideCheck(iblockstate, stopOnLiquid)) {
-					final RayTraceResult raytraceresult = iblockstate.collisionRayTrace(world, blockpos, vec31, vec32);
+					final RayTraceResult raytraceresult = iblockstate.collisionRayTrace(world, blockpos, eyePosition, rangePosition);
 
 					if (raytraceresult != null) {
 						return raytraceresult;
@@ -175,7 +175,7 @@ public final class RayTrace {
 				int k1 = 200;
 
 				while (k1-- >= 0) {
-					if (Double.isNaN(vec31.x) || Double.isNaN(vec31.y) || Double.isNaN(vec31.z)) {
+					if (Double.isNaN(eyePosition.x) || Double.isNaN(eyePosition.y) || Double.isNaN(eyePosition.z)) {
 						return null;
 					}
 
@@ -217,20 +217,20 @@ public final class RayTrace {
 					double d3 = 999.0D;
 					double d4 = 999.0D;
 					double d5 = 999.0D;
-					final double d6 = vec32.x - vec31.x;
-					final double d7 = vec32.y - vec31.y;
-					final double d8 = vec32.z - vec31.z;
+					final double d6 = rangePosition.x - eyePosition.x;
+					final double d7 = rangePosition.y - eyePosition.y;
+					final double d8 = rangePosition.z - eyePosition.z;
 
 					if (flag2) {
-						d3 = (d0 - vec31.x) / d6;
+						d3 = (d0 - eyePosition.x) / d6;
 					}
 
 					if (flag) {
-						d4 = (d1 - vec31.y) / d7;
+						d4 = (d1 - eyePosition.y) / d7;
 					}
 
 					if (flag1) {
-						d5 = (d2 - vec31.z) / d8;
+						d5 = (d2 - eyePosition.z) / d8;
 					}
 
 					if (d3 == -0.0D) {
@@ -249,18 +249,18 @@ public final class RayTrace {
 
 					if (d3 < d4 && d3 < d5) {
 						enumfacing = i > l ? EnumFacing.WEST : EnumFacing.EAST;
-						vec31 = new Vec3d(d0, vec31.y + d7 * d3, vec31.z + d8 * d3);
+						eyePosition = new Vec3d(d0, eyePosition.y + d7 * d3, eyePosition.z + d8 * d3);
 					} else if (d4 < d5) {
 						enumfacing = j > i1 ? EnumFacing.DOWN : EnumFacing.UP;
-						vec31 = new Vec3d(vec31.x + d6 * d4, d1, vec31.z + d8 * d4);
+						eyePosition = new Vec3d(eyePosition.x + d6 * d4, d1, eyePosition.z + d8 * d4);
 					} else {
 						enumfacing = k > j1 ? EnumFacing.NORTH : EnumFacing.SOUTH;
-						vec31 = new Vec3d(vec31.x + d6 * d5, vec31.y + d7 * d5, d2);
+						eyePosition = new Vec3d(eyePosition.x + d6 * d5, eyePosition.y + d7 * d5, d2);
 					}
 
-					l = MathStuff.floor(vec31.x) - (enumfacing == EnumFacing.EAST ? 1 : 0);
-					i1 = MathStuff.floor(vec31.y) - (enumfacing == EnumFacing.UP ? 1 : 0);
-					j1 = MathStuff.floor(vec31.z) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
+					l = MathStuff.floor(eyePosition.x) - (enumfacing == EnumFacing.EAST ? 1 : 0);
+					i1 = MathStuff.floor(eyePosition.y) - (enumfacing == EnumFacing.UP ? 1 : 0);
+					j1 = MathStuff.floor(eyePosition.z) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
 					blockpos.setPos(l, i1, j1);
 					iblockstate = provider.getBlockState(blockpos);
 					block = iblockstate.getBlock();
@@ -268,14 +268,14 @@ public final class RayTrace {
 					if (!ignoreBlockWithoutBoundingBox || iblockstate.getMaterial() == Material.PORTAL
 							|| iblockstate.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) {
 						if (block.canCollideCheck(iblockstate, stopOnLiquid)) {
-							final RayTraceResult raytraceresult1 = iblockstate.collisionRayTrace(world, blockpos, vec31,
-									vec32);
+							final RayTraceResult raytraceresult1 = iblockstate.collisionRayTrace(world, blockpos, eyePosition,
+									rangePosition);
 
 							if (raytraceresult1 != null) {
 								return raytraceresult1;
 							}
 						} else {
-							raytraceresult2 = new RayTraceResult(RayTraceResult.Type.MISS, vec31, enumfacing, blockpos);
+							raytraceresult2 = new RayTraceResult(RayTraceResult.Type.MISS, eyePosition, enumfacing, blockpos);
 						}
 					}
 				}
