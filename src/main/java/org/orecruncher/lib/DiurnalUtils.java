@@ -62,7 +62,7 @@ public final class DiurnalUtils {
 	}
 
 	public static DayCycle getCycle(@Nonnull final World world) {
-		if (world == null || world.provider == null || !world.provider.hasSkyLight())
+		if (world == null || world.provider == null || world.provider.isNether() || !world.provider.hasSkyLight())
 			return DayCycle.NO_SKY;
 
 		final float brFactor = world.provider.getSunBrightnessFactor(1.0f);
