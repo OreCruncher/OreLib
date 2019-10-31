@@ -25,7 +25,6 @@ package org.orecruncher.lib.expression;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Stack;
 
 import javax.annotation.Nonnull;
@@ -78,8 +77,8 @@ public final class Compiler {
 				stack.push(result);
 			} else if (this.variables.containsKey(token)) {
 				stack.push(this.variables.get(token));
-			} else if (this.functions.containsKey(token.toUpperCase(Locale.ROOT))) {
-				final LazyFunction f = this.functions.get(token.toUpperCase(Locale.ROOT));
+			} else if (this.functions.containsKey(token)) {
+				final LazyFunction f = this.functions.get(token);
 				final ArrayList<LazyVariant> p = new ArrayList<>(
 						!f.numParamsVaries() ? f.getNumParams() : 0);
 				// pop parameters off the stack until we hit the start of
@@ -153,7 +152,7 @@ public final class Compiler {
 				outputQueue.add(token);
 			} else if (this.variables.containsKey(token)) {
 				outputQueue.add(token);
-			} else if (this.functions.containsKey(token.toUpperCase(Locale.ROOT))) {
+			} else if (this.functions.containsKey(token)) {
 				stack.push(token);
 				lastFunction = token;
 			} else if (Character.isLetter(token.charAt(0))) {
@@ -190,7 +189,7 @@ public final class Compiler {
 					}
 					// if the ( is preceded by a valid function, then it
 					// denotes the start of a parameter list
-					if (this.functions.containsKey(previousToken.toUpperCase(Locale.ROOT))) {
+					if (this.functions.containsKey(previousToken)) {
 						outputQueue.add(token);
 					}
 				}
@@ -207,7 +206,7 @@ public final class Compiler {
 					throw new ExpressionException("Mismatched parentheses");
 				}
 				stack.pop();
-				if (!stack.isEmpty() && this.functions.containsKey(stack.peek().toUpperCase(Locale.ROOT))) {
+				if (!stack.isEmpty() && this.functions.containsKey(stack.peek())) {
 					outputQueue.add(stack.pop());
 				}
 			}
@@ -275,8 +274,8 @@ public final class Compiler {
 				}
 			} else if (this.variables.containsKey(token)) {
 				stack.set(stack.size() - 1, stack.peek() + 1);
-			} else if (this.functions.containsKey(token.toUpperCase(Locale.ROOT))) {
-				final LazyFunction f = this.functions.get(token.toUpperCase(Locale.ROOT));
+			} else if (this.functions.containsKey(token)) {
+				final LazyFunction f = this.functions.get(token);
 				final int numParams = stack.pop();
 				if (!f.numParamsVaries() && numParams != f.getNumParams()) {
 					throw new ExpressionException(

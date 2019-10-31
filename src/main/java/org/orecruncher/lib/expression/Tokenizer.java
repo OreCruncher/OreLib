@@ -109,14 +109,17 @@ public final class Tokenizer implements Iterator<String> {
 
 	@Override
 	public String next() {
-		final StringBuilder token = new StringBuilder();
 		if (this.pos >= this.input.length()) {
 			return this.previousToken = null;
 		}
+		
+		final StringBuilder token = new StringBuilder();
+		
 		char ch = this.input.charAt(this.pos);
 		while (Character.isWhitespace(ch) && this.pos < this.input.length()) {
 			ch = this.input.charAt(++this.pos);
 		}
+		
 		if (Character.isDigit(ch)) {
 			while ((Character.isDigit(ch) || ch == decimalSeparator || ch == 'e' || ch == 'E'
 					|| (ch == minusSign && token.length() > 0
@@ -169,6 +172,7 @@ public final class Tokenizer implements Iterator<String> {
 						"Unknown operator '" + token + "' at position " + (this.pos - token.length() + 1));
 			}
 		}
+		
 		return this.previousToken = token.toString();
 	}
 
