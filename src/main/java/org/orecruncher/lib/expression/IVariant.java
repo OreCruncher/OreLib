@@ -21,13 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package org.orecruncher.lib.expression;
 
-/**
- * LazyVariant interface created for lazily evaluated functions
- */
-public interface LazyVariant {
-	
-	IVariant eval();
-	
+import javax.annotation.Nonnull;
+
+public interface IVariant extends LazyVariant, Comparable<IVariant> {
+
+	default String getName() {
+		return "<ANON>";
+	}
+
+	float asNumber();
+
+	String asString();
+
+	boolean asBoolean();
+
+	// Operator support in case of strings
+	@Nonnull
+	IVariant add(@Nonnull final IVariant term);
+
+	@Nonnull
+	String toString();
+
+	@Nonnull
+	default IVariant eval() {
+		return this;
+	}
+
 }

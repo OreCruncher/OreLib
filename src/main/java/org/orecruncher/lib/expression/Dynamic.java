@@ -24,6 +24,8 @@
 
 package org.orecruncher.lib.expression;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,63 +36,66 @@ public final class Dynamic {
 
 	}
 
-	public abstract static class DynamicNumber extends NumberValue implements IDynamicVariant<NumberValue> {
+	public final static class DynamicNumber extends NumberValue implements IDynamicVariant {
+		
 		private boolean needsSet = true;
+		private final Supplier<Float> supplier;
 
-		public DynamicNumber(@Nonnull final String name) {
+		public DynamicNumber(@Nonnull final String name, @Nonnull final Supplier<Float> func) {
 			super(name);
+			
+			this.supplier = func;
 		}
 
 		@Override
 		public void reset() {
 			this.needsSet = true;
 		}
+		
+		protected void update() {
+			if (this.needsSet) {
+				this.value = this.supplier.get();
+				this.needsSet = false;
+			}
+		}
 
 		@Override
 		public float asNumber() {
-			if (this.needsSet) {
-				update();
-				this.needsSet = false;
-			}
+			update();
 			return super.asNumber();
 		}
 
 		@Override
 		@Nonnull
 		public String asString() {
-			if (this.needsSet) {
-				update();
-				this.needsSet = false;
-			}
+			update();
 			return super.asString();
 		}
 
 		@Override
 		public boolean asBoolean() {
-			if (this.needsSet) {
-				update();
-				this.needsSet = false;
-			}
+			update();
 			return super.asBoolean();
 		}
 
 		// Operator support in case of strings
 		@Override
 		@Nonnull
-		public Variant add(@Nonnull final Variant term) {
-			if (this.needsSet) {
-				update();
-				this.needsSet = false;
-			}
+		public IVariant add(@Nonnull final IVariant term) {
+			update();
 			return super.add(term);
 		}
 	}
 
-	public abstract static class DynamicString extends StringValue implements IDynamicVariant<StringValue> {
+	public final static class DynamicString extends StringValue implements IDynamicVariant {
+		
 		private boolean needsSet = true;
+		private final Supplier<String> supplier;
 
-		public DynamicString(@Nonnull final String name) {
+		public DynamicString(@Nonnull final String name, @Nonnull final Supplier<String> func) {
 			super(name, StringUtils.EMPTY);
+
+			this.supplier = func;
 		}
 
 		@Override
@@ -98,51 +103,50 @@ public final class Dynamic {
 			this.needsSet = true;
 		}
 
-		@Override
-		public float asNumber() {
+		protected void update() {
 			if (this.needsSet) {
-				update();
+				this.value = this.supplier.get();
 				this.needsSet = false;
 			}
+		}
+
+		@Override
+		public float asNumber() {
+			update();
 			return super.asNumber();
 		}
 
 		@Override
 		@Nonnull
 		public String asString() {
-			if (this.needsSet) {
-				update();
-				this.needsSet = false;
-			}
+			update();
 			return super.asString();
 		}
 
 		@Override
 		public boolean asBoolean() {
-			if (this.needsSet) {
-				update();
-				this.needsSet = false;
-			}
+			update();
 			return super.asBoolean();
 		}
 
 		// Operator support in case of strings
 		@Override
 		@Nonnull
-		public Variant add(@Nonnull final Variant term) {
-			if (this.needsSet) {
-				update();
-				this.needsSet = false;
-			}
+		public IVariant add(@Nonnull final IVariant term) {
+			update();
 			return super.add(term);
 		}
 	}
 
-	public abstract static class DynamicBoolean extends BooleanValue implements IDynamicVariant<BooleanValue> {
+	public final static class DynamicBoolean extends BooleanValue implements IDynamicVariant {
+		
 		private boolean needsSet = true;
+		private final Supplier<Boolean> supplier;
 
-		public DynamicBoolean(@Nonnull final String name) {
+		public DynamicBoolean(@Nonnull final String name, @Nonnull final Supplier<Boolean> func) {
 			super(name);
+			
+			this.supplier = func;
 		}
 
 		@Override
@@ -150,44 +154,38 @@ public final class Dynamic {
 			this.needsSet = true;
 		}
 
-		@Override
-		public float asNumber() {
+		protected void update() {
 			if (this.needsSet) {
-				update();
+				this.value = this.supplier.get();
 				this.needsSet = false;
 			}
+		}
+
+		@Override
+		public float asNumber() {
+			update();
 			return super.asNumber();
 		}
 
 		@Override
 		@Nonnull
 		public String asString() {
-			if (this.needsSet) {
-				update();
-				this.needsSet = false;
-			}
+			update();
 			return super.asString();
 		}
 
 		@Override
 		public boolean asBoolean() {
-			if (this.needsSet) {
-				update();
-				this.needsSet = false;
-			}
+			update();
 			return super.asBoolean();
 		}
 
 		// Operator support in case of strings
 		@Override
 		@Nonnull
-		public Variant add(@Nonnull final Variant term) {
-			if (this.needsSet) {
-				update();
-				this.needsSet = false;
-			}
+		public IVariant add(@Nonnull final IVariant term) {
+			update();
 			return super.add(term);
 		}
 	}
-
 }

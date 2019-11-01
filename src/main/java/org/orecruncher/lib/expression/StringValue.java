@@ -64,13 +64,13 @@ public class StringValue extends Variant {
 	}
 
 	@Override
-	public int compareTo(@Nonnull final Variant variant) {
+	public int compareTo(@Nonnull final IVariant variant) {
 		return this.value.compareTo(variant.asString());
 	}
 
 	@Override
 	@Nonnull
-	public Variant add(@Nonnull final Variant term) {
+	public IVariant add(@Nonnull final IVariant term) {
 		return new StringValue(this.value.concat(term.asString()));
 	}
 

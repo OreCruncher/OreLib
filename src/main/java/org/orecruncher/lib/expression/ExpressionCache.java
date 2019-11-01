@@ -36,10 +36,10 @@ import org.orecruncher.lib.logging.ModLog;
 
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 
-public class ExpressionCache {
+public final class ExpressionCache {
 
 	protected final ModLog logger;
-	protected final List<IDynamicVariant<?>> variants = new ArrayList<>();
+	protected final List<IDynamicVariant> variants = new ArrayList<>();
 	protected final Map<String, LazyVariant> cache = new Reference2ObjectOpenHashMap<>();
 	protected final List<String> naughtyList = new ArrayList<>();
 
@@ -80,7 +80,7 @@ public class ExpressionCache {
 	 * @return List of dynamic variants registered with the expression cache
 	 */
 	@Nonnull
-	public List<IDynamicVariant<?>> getVariantList() {
+	public List<IDynamicVariant> getVariantList() {
 		return new ArrayList<>(this.variants);
 	}
 
@@ -132,7 +132,7 @@ public class ExpressionCache {
 	 * @return Variant containing the results of the evaluation
 	 */
 	@Nonnull
-	public Variant eval(@Nonnull final String script) {
+	public IVariant eval(@Nonnull final String script) {
 		return compile(script.intern()).eval();
 	}
 

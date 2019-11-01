@@ -24,13 +24,8 @@
 
 package org.orecruncher.lib.expression;
 
-public interface IDynamicVariant<T extends Variant> {
-
-	String getName();
+public interface IDynamicVariant extends IVariant {
 
 	void reset();
-	
-	void update();
 
-	String asString();
 }

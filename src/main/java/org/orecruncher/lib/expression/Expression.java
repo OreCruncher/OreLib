@@ -74,98 +74,98 @@ public final class Expression {
 	static {
 		addBuiltInOperator(new Operator("!", 20, false, true) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return operands[0].eval().asBoolean() ? FALSE : TRUE;
 			}
 		});
 		addBuiltInOperator(new Operator("+", 20, true) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return operands[0].eval().add(operands[1].eval());
 			}
 		});
 		addBuiltInOperator(new Operator("-", 20, true) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return new NumberValue(operands[0].eval().asNumber() - operands[1].eval().asNumber());
 			}
 		});
 		addBuiltInOperator(new Operator("*", 30, true) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return new NumberValue(operands[0].eval().asNumber() * operands[1].eval().asNumber());
 			}
 		});
 		addBuiltInOperator(new Operator("/", 30, true) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return new NumberValue(operands[0].eval().asNumber() / operands[1].eval().asNumber());
 			}
 		});
 		addBuiltInOperator(new Operator("%", 30, true) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return new NumberValue(operands[0].eval().asNumber() % operands[1].eval().asNumber());
 			}
 		});
 		addBuiltInOperator(new Operator("&&", 4, false) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return operands[0].eval().asBoolean() && operands[1].eval().asBoolean() ? TRUE : FALSE;
 			}
 		});
 
 		addBuiltInOperator(new Operator("||", 2, false) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return operands[0].eval().asBoolean() || operands[1].eval().asBoolean() ? TRUE : FALSE;
 			}
 		});
 
 		addBuiltInOperator(new Operator(">", 10, false) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return operands[0].eval().compareTo(operands[1].eval()) > 0 ? TRUE : FALSE;
 			}
 		});
 
 		addBuiltInOperator(new Operator(">=", 10, false) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return operands[0].eval().compareTo(operands[1].eval()) >= 0 ? TRUE : FALSE;
 			}
 		});
 
 		addBuiltInOperator(new Operator("<", 10, false) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return operands[0].eval().compareTo(operands[1].eval()) < 0 ? TRUE : FALSE;
 			}
 		});
 
 		addBuiltInOperator(new Operator("<=", 10, false) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return operands[0].eval().compareTo(operands[1].eval()) <= 0 ? TRUE : FALSE;
 			}
 		});
 
 		addBuiltInOperator(new Operator("=", 7, false) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return operands[0].eval().compareTo(operands[1].eval()) == 0 ? TRUE : FALSE;
 			}
 		});
 		addBuiltInOperator(new Operator("==", 7, false) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return operands[0].eval().compareTo(operands[1].eval()) == 0 ? TRUE : FALSE;
 			}
 		});
 
 		addBuiltInOperator(new Operator("!=", 7, false) {
 			@Override
-			public Variant eval(final LazyVariant... operands) {
+			public IVariant eval(final LazyVariant... operands) {
 				return operands[0].eval().compareTo(operands[1].eval()) != 0 ? TRUE : FALSE;
 			}
 		});
@@ -177,7 +177,7 @@ public final class Expression {
 		});
 		addBuiltInFunction(new Function("MATCH", 2) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				final String regex = parameters[0].asString();
 				final String input = parameters[1].asString();
 				return Pattern.matches(regex, input) ? TRUE : FALSE;
@@ -185,7 +185,7 @@ public final class Expression {
 		});
 		addBuiltInFunction(new Function("NOT", 1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				return parameters[0].asBoolean() ? FALSE : TRUE;
 			}
 		});
@@ -202,53 +202,53 @@ public final class Expression {
 
 		addBuiltInFunction(new Function("RANDOM", 0) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				return new NumberValue(XorShiftRandom.current().nextFloat());
 			}
 		});
 		addBuiltInFunction(new Function("SIN", 1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				final float d = MathStuff.sin(MathStuff.toRadians(parameters[0].asNumber()));
 				return new NumberValue(d);
 			}
 		});
 		addBuiltInFunction(new Function("COS", 1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				final float d = MathStuff.cos(MathStuff.toRadians(parameters[0].asNumber()));
 				return new NumberValue(d);
 			}
 		});
 		addBuiltInFunction(new Function("TAN", 1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				final float d = MathStuff.tan(MathStuff.toRadians(parameters[0].asNumber()));
 				return new NumberValue(d);
 			}
 		});
 		addBuiltInFunction(new Function("RAD", 1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public Variant eval(final IVariant... parameters) {
 				final float d = MathStuff.toRadians(parameters[0].asNumber());
 				return new NumberValue(d);
 			}
 		});
 		addBuiltInFunction(new Function("DEG", 1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				final float d = MathStuff.toDegrees(parameters[0].asNumber());
 				return new NumberValue(d);
 			}
 		});
 		addBuiltInFunction(new Function("MAX", -1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				if (parameters.length == 0) {
 					throw new ExpressionException("MAX requires at least one parameter");
 				}
-				Variant max = null;
-				for (final Variant parameter : parameters) {
+				IVariant max = null;
+				for (final IVariant parameter : parameters) {
 					if (max == null || parameter.compareTo(max) > 0) {
 						max = parameter;
 					}
@@ -258,11 +258,11 @@ public final class Expression {
 		});
 		addBuiltInFunction(new Function("ONEOF", -1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				if (parameters.length < 2) {
 					throw new ExpressionException("ONEOF requires at least two parameters");
 				}
-				final Variant selector = parameters[0];
+				final IVariant selector = parameters[0];
 				for (int i = 1; i < parameters.length; i++) {
 					if (selector.compareTo(parameters[i]) == 0)
 						return TRUE;
@@ -272,12 +272,12 @@ public final class Expression {
 		});
 		addBuiltInFunction(new Function("MIN", -1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				if (parameters.length == 0) {
 					throw new ExpressionException("MIN requires at least one parameter");
 				}
-				Variant min = null;
-				for (final Variant parameter : parameters) {
+				IVariant min = null;
+				for (final IVariant parameter : parameters) {
 					if (min == null || parameter.compareTo(min) < 0) {
 						min = parameter;
 					}
@@ -287,41 +287,41 @@ public final class Expression {
 		});
 		addBuiltInFunction(new Function("ABS", 1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				return new NumberValue(MathStuff.abs(parameters[0].asNumber()));
 			}
 		});
 		addBuiltInFunction(new Function("ROUND", 1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				final float toRound = parameters[0].asNumber();
 				return new NumberValue(Math.round(toRound));
 			}
 		});
 		addBuiltInFunction(new Function("FLOOR", 1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				final float toRound = parameters[0].asNumber();
 				return new NumberValue(Math.floor(toRound));
 			}
 		});
 		addBuiltInFunction(new Function("CEILING", 1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				final float toRound = parameters[0].asNumber();
 				return new NumberValue(Math.ceil(toRound));
 			}
 		});
 		addBuiltInFunction(new Function("SQRT", 1) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				final float x = parameters[0].asNumber();
 				return new NumberValue(Math.sqrt(x));
 			}
 		});
 		addBuiltInFunction(new Function("CLAMP", 3) {
 			@Override
-			public Variant eval(final Variant... parameters) {
+			public IVariant eval(final IVariant... parameters) {
 				final float val = parameters[0].asNumber();
 				final float low = parameters[1].asNumber();
 				final float high = parameters[2].asNumber();
@@ -386,7 +386,7 @@ public final class Expression {
 	 *
 	 * @return The result of the expression.
 	 */
-	public Variant eval() {
+	public IVariant eval() {
 		return getProgram().eval();
 	}
 

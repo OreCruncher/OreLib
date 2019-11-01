@@ -86,13 +86,13 @@ public class NumberValue extends Variant {
 	}
 
 	@Override
-	public int compareTo(@Nonnull final Variant variant) {
+	public int compareTo(@Nonnull final IVariant variant) {
 		return Float.compare(this.value, variant.asNumber());
 	}
 
 	@Override
 	@Nonnull
-	public Variant add(@Nonnull final Variant term) {
+	public IVariant add(@Nonnull final IVariant term) {
 		return new NumberValue(this.value + term.asNumber());
 	}
 

@@ -26,7 +26,7 @@ package org.orecruncher.lib.expression;
 
 import javax.annotation.Nonnull;
 
-public abstract class Variant implements Comparable<Variant>, LazyVariant {
+public abstract class Variant implements IVariant, Comparable<IVariant> {
 
 	protected final String name;
 
@@ -38,31 +38,17 @@ public abstract class Variant implements Comparable<Variant>, LazyVariant {
 		this.name = name;
 	}
 
+	@Override
 	@Nonnull
 	public String getName() {
 		return this.name;
 	}
 
-	public abstract float asNumber();
-
-	@Nonnull
-	public abstract String asString();
-
-	public abstract boolean asBoolean();
-
 	// Operator support in case of strings
-	@Nonnull
-	public abstract Variant add(@Nonnull final Variant term);
-
 	@Override
 	@Nonnull
 	public final String toString() {
 		return asString();
 	}
 
-	@Override
-	@Nonnull
-	public final Variant eval() {
-		return this;
-	}
 }

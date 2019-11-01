@@ -42,7 +42,7 @@ public abstract class Function extends LazyFunction {
 
 	@Override
 	public LazyVariant lazyEval(final LazyVariant... lazyParams) {
-		final Variant[] params = new Variant[lazyParams.length];
+		final IVariant[] params = new IVariant[lazyParams.length];
 		for (int i = 0; i < lazyParams.length; i++)
 			params[i] = lazyParams[i].eval();
 		return () -> Function.this.eval(params);
@@ -57,5 +57,5 @@ public abstract class Function extends LazyFunction {
 	 * @return The function must return a new {@link Variant} value as a computing
 	 *         result.
 	 */
-	public abstract Variant eval(final Variant... params);
+	public abstract IVariant eval(final IVariant... params);
 }

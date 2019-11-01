@@ -31,7 +31,7 @@ import javax.annotation.Nonnull;
 
 public class DynamicVariantList {
 
-	protected final List<IDynamicVariant<?>> variants = new ArrayList<>();
+	protected final List<IDynamicVariant> variants = new ArrayList<>();
 
 	public DynamicVariantList() {
 
@@ -51,7 +51,7 @@ public class DynamicVariantList {
 	 * @param dv
 	 *            Dynamic variant to add to the list
 	 */
-	public void add(@Nonnull final IDynamicVariant<?> dv) {
+	public void add(@Nonnull final IDynamicVariant dv) {
 		this.variants.add(dv);
 	}
 
@@ -71,7 +71,7 @@ public class DynamicVariantList {
 	 * @return The list of dynamic variants
 	 */
 	@Nonnull
-	public List<IDynamicVariant<?>> getList() {
+	public List<IDynamicVariant> getList() {
 		return new ArrayList<>(this.variants);
 	}
 
