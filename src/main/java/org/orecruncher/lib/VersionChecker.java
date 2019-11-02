@@ -80,12 +80,10 @@ public final class VersionChecker {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	public static void doCheck(@Nonnull final PlayerLoggedInEvent event, @Nonnull String modId) {
 		doCheck(event, modId, modId + ".msg.NewVersion");
 	}
 
-	@SideOnly(Side.CLIENT)
 	public static void doCheck(@Nonnull final PlayerLoggedInEvent event, @Nonnull String modId,
 			@Nonnull String msgId) {
 		if (event.player instanceof EntityPlayer) {
