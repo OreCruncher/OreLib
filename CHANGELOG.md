@@ -1,4 +1,4 @@
-### OreLib-1.12.2-3.6.0.0
+### OreLib-1.12.2-3.6.0.1
 **Requirements**
 * Forge 2779+
 
