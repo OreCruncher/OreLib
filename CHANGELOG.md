@@ -1,3 +1,13 @@
+### OreLib-1.12.2-3.6.0.0
+**Requirements**
+* Forge 2779+
+
+**What's New**
+* Config options to control debug tracing and version update notification in chat during log in.
+
+**Changes**
+* Removed dead code and brought inline with Dynamic Surroundings/Huds.
+
 ### OreLib-1.12.2-3.5.2.3
 **Requirements**
 * Forge 2768+
